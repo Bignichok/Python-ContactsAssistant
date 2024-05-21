@@ -5,6 +5,15 @@ from dataHelpers import save_data, load_data
 not_found_message = "Contact does not exist, you can add it"
 
 def handle_error(func):
+    """
+    Decorator to handle exceptions in the wrapped function.
+
+    Args:
+        func (function): The function to wrap with error handling.
+
+    Returns:
+        function: The wrapped function with error handling.
+    """
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
@@ -15,6 +24,16 @@ def handle_error(func):
 
 @handle_error
 def add_contact(args, book: AddressBook):
+    """
+    Add a contact to the address book or update an existing contact.
+
+    Args:
+        args (list): List containing name and phone number.
+        book (AddressBook): The address book to add the contact to.
+
+    Returns:
+        str: Message indicating whether the contact was added or updated.
+    """
     name, phone, email = args
     record = book.find(name)
     message = "Contact updated."
@@ -30,6 +49,16 @@ def add_contact(args, book: AddressBook):
 
 @handle_error
 def change_contact(args, book: AddressBook):
+    """
+    Change the phone number of an existing contact.
+
+    Args:
+        args (list): List containing name, old phone number, and new phone number.
+        book (AddressBook): The address book containing the contact.
+
+    Returns:
+        str: Message indicating whether the phone number was changed or if the contact was not found.
+    """
     name, old_number, new_number = args
     record = book.find(name)
     if record is None:
@@ -50,6 +79,16 @@ def change_email(args, book: AddressBook):
     
 @handle_error
 def show_phone(args, book: AddressBook):
+    """
+    Show the phone number of a contact.
+
+    Args:
+        args (list): List containing the name of the contact.
+        book (AddressBook): The address book containing the contact.
+
+    Returns:
+        str or Record: The contact's record or a message indicating the contact was not found.
+    """
     name = args[0]
     record = book.find(name)
     if record is None:
@@ -58,6 +97,16 @@ def show_phone(args, book: AddressBook):
 
 @handle_error
 def add_birthday(args, book: AddressBook):
+    """
+    Add a birthday to a contact.
+
+    Args:
+        args (list): List containing name and birthday date.
+        book (AddressBook): The address book containing the contact.
+
+    Returns:
+        str: Message indicating whether the birthday was added or if the contact was not found.
+    """
     name, date = args
     record = book.find(name)
     if record:
@@ -68,6 +117,16 @@ def add_birthday(args, book: AddressBook):
 
 @handle_error
 def show_birthday(args, book: AddressBook):
+    """
+    Show the birthday of a contact.
+
+    Args:
+        args (list): List containing the name of the contact.
+        book (AddressBook): The address book containing the contact.
+
+    Returns:
+        str: The birthday date or a message indicating the birthday was not added or the contact was not found.
+    """
     name = args[0]
     record = book.find(name)
     if record:
@@ -79,11 +138,25 @@ def show_birthday(args, book: AddressBook):
         return not_found_message
 
 def parse_input(user_input):
+    """
+    Parse user input into a command and its arguments.
+
+    Args:
+        user_input (str): The input string from the user.
+
+    Returns:
+        tuple: The command and a list of arguments.
+    """
     cmd, *args = user_input.split()
     cmd = cmd.strip().lower()
     return cmd, *args
 
 def main():
+    """
+    Main function to run the assistant bot.
+    
+    Continuously prompts the user for commands and executes the appropriate function.
+    """
     book = load_data()
     print("Welcome to the assistant bot!")
     while True:
