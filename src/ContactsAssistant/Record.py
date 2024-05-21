@@ -1,15 +1,17 @@
 from Phone import Phone
 from Name import Name
 from Birthday import Birthday
+from Email import Email
 
 class Record:
     def __init__(self, name):
         self.name = Name(name)
         self.phones = []
         self.birthday = None
+        self.email = ''
 
     def __str__(self):
-        result = f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
+        result = f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}, email: {self.email}"
         if self.birthday:
             result += f", birthday: {self.birthday}"
         return result
@@ -37,3 +39,15 @@ class Record:
             
     def add_birthday(self, date):
         self.birthday = Birthday(date)
+
+    def add_email(self, email: str):
+        """
+        Adds and validates the user's email address.
+        
+        Args:
+            email (str): The email address to be validated and added.
+        
+        Raises:
+            ValueError: If the email address format is invalid.
+        """
+        self.email = Email(email)

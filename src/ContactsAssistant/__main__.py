@@ -15,7 +15,7 @@ def handle_error(func):
 
 @handle_error
 def add_contact(args, book: AddressBook):
-    name, phone = args
+    name, phone, email = args
     record = book.find(name)
     message = "Contact updated."
     if record is None:
@@ -24,6 +24,8 @@ def add_contact(args, book: AddressBook):
         message = "Contact added."
     if phone:
         record.add_phone(phone)
+    if email:
+        record.add_email(email)
     return message
 
 @handle_error
@@ -35,6 +37,16 @@ def change_contact(args, book: AddressBook):
     else:
         record.edit_phone(old_number, new_number)
         return "Phone changed"
+    
+@handle_error
+def change_email(args, book: AddressBook):
+    name, email = args
+    record = book.find(name)
+    if record is None:
+        return not_found_message
+    else:
+        record.add_email(email)
+        return "Email changed"
     
 @handle_error
 def show_phone(args, book: AddressBook):
@@ -99,6 +111,8 @@ def main():
                 print(show_birthday(args, book))
             case "birthdays":
                 print(book.get_upcoming_birthdays())
+            case "change-email":
+                print(change_email(args, book))
             case _:
                 print("Invalid command.")
 
