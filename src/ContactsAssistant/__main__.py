@@ -4,6 +4,7 @@ from dataHelpers import save_data, load_data
 
 not_found_message = "Contact does not exist, you can add it"
 
+
 def handle_error(func):
     """
     Decorator to handle exceptions in the wrapped function.
@@ -14,6 +15,7 @@ def handle_error(func):
     Returns:
         function: The wrapped function with error handling.
     """
+
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
@@ -21,6 +23,7 @@ def handle_error(func):
             return str(error)
 
     return inner
+
 
 @handle_error
 def add_contact(args, book: AddressBook):
@@ -47,6 +50,25 @@ def add_contact(args, book: AddressBook):
         record.add_email(email)
     return message
 
+
+@handle_error
+def remove_contact(args, book: AddressBook):
+    """
+    Removes an contact from address book.
+
+    Args:
+        args (list): List containing contact name.
+        book (AddressBook): The address book.
+
+    Returns:
+        str: Message indicating whether the contact was added or updated.
+    """
+    name = args[0]
+    if book.delete(name) is None:
+        return f"Contact with name {name} does not exist."
+    return "Contact removed."
+
+
 @handle_error
 def change_contact(args, book: AddressBook):
     """
@@ -66,7 +88,8 @@ def change_contact(args, book: AddressBook):
     else:
         record.edit_phone(old_number, new_number)
         return "Phone changed"
-    
+
+
 @handle_error
 def change_email(args, book: AddressBook):
     name, email = args
@@ -76,7 +99,8 @@ def change_email(args, book: AddressBook):
     else:
         record.add_email(email)
         return "Email changed"
-    
+
+
 @handle_error
 def show_phone(args, book: AddressBook):
     """
@@ -94,6 +118,7 @@ def show_phone(args, book: AddressBook):
     if record is None:
         return not_found_message
     return record
+
 
 @handle_error
 def add_birthday(args, book: AddressBook):
@@ -115,6 +140,7 @@ def add_birthday(args, book: AddressBook):
     else:
         return not_found_message
 
+
 @handle_error
 def show_birthday(args, book: AddressBook):
     """
@@ -133,9 +159,10 @@ def show_birthday(args, book: AddressBook):
         if record.birthday:
             return record.birthday
         else:
-            return 'Birthday not added to this contact.'
+            return "Birthday not added to this contact."
     else:
         return not_found_message
+
 
 def parse_input(user_input):
     """
@@ -151,10 +178,30 @@ def parse_input(user_input):
     cmd = cmd.strip().lower()
     return cmd, *args
 
+
+def get_allowed_commands():
+    return [
+        "close",
+        "exit",
+        "add",
+        "change",
+        "remove",
+        "all",
+        "phone",
+        "addphone",
+        "removephone",
+        "updatephone",
+        "add-birthday",
+        "show-birthday",
+        "change-email",
+        "birthdays",
+    ]
+
+
 def main():
     """
     Main function to run the assistant bot.
-    
+
     Continuously prompts the user for commands and executes the appropriate function.
     """
     book = load_data()
@@ -162,7 +209,7 @@ def main():
     while True:
         user_input = input("Enter a command: ")
         command, *args = parse_input(user_input)
-        
+
         match command:
             case "hello":
                 print("How can I help you?")
@@ -174,6 +221,8 @@ def main():
                 print(add_contact(args, book))
             case "change":
                 print(change_contact(args, book))
+            case "remove":
+                print(remove_contact(args, book))
             case "phone":
                 print(show_phone(args, book))
             case "all":
@@ -186,8 +235,12 @@ def main():
                 print(book.get_upcoming_birthdays())
             case "change-email":
                 print(change_email(args, book))
+            case "help":
+                print("Allowed commands:")
+                print(get_allowed_commands())
             case _:
                 print("Invalid command.")
+
 
 if __name__ == "__main__":
     main()
