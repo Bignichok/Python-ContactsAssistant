@@ -3,7 +3,8 @@ from collections import UserDict
 
 from constants import DATE_FORMAT
 
-def is_weekend_day(day:int) -> bool:
+
+def is_weekend_day(day: int) -> bool:
     """
     Checks if a given day is a weekend.
 
@@ -15,10 +16,11 @@ def is_weekend_day(day:int) -> bool:
     """
     return day > 4
 
+
 class AddressBook(UserDict):
     """
     A class to represent an address book that stores and manages records.
-    
+
     Inherits from UserDict to utilize a dictionary as the underlying data structure.
 
     Methods:
@@ -28,41 +30,42 @@ class AddressBook(UserDict):
         delete(name): Deletes a record by name.
         get_upcoming_birthdays(): Returns a list of upcoming birthdays within the next 7 days.
     """
+
     def __str__(self):
         """
         Returns a string representation of the address book.
-        
+
         Returns:
             str: A string with each record in the address book on a new line.
         """
         lines = []
 
         for _, record in self.data.items():
-            lines.append(f'{record}')
-            
+            lines.append(f"{record}")
+
         return "\n".join(lines)
-    
+
     def add_record(self, record):
         """
         Adds a new record to the address book.
-        
+
         Args:
             record: The record to be added.
-        
+
         Raises:
             KeyError: If a record with the same name already exists in the address book.
         """
         if record.name.value in self.data:
             raise KeyError(f"Record with name '{record.name.value}' already exists.")
         self.data[record.name.value] = record
-            
+
     def find(self, name: str):
         """
         Finds and returns a record by name.
-        
+
         Args:
             name (str): The name of the record to find.
-        
+
         Returns:
             The record if found, otherwise None.
         """
@@ -70,22 +73,27 @@ class AddressBook(UserDict):
             return self.data[name]
         else:
             return None
-        
+
     def delete(self, name):
         """
         Deletes a record by name.
-        
         Args:
             name: The name of the record to delete.
+
+        Returns:
+            The record which was deleted, if record not found returns None.
         """
-        del self.data[name]
-        
-    def get_upcoming_birthdays(self): 
+        if name in self.data:
+            removedcontact = self.data[name]
+            del self.data[name]
+            return removedcontact
+        else:
+            return None
+
+    def get_upcoming_birthdays(self):
         """
         Returns a list of upcoming birthdays within the next 7 days.
-        
         If a birthday falls on a weekend, the congratulation date is moved to the next Monday.
-        
         Returns:
             list: A list of dictionaries with names and congratulation dates for upcoming birthdays.
         """
@@ -94,7 +102,9 @@ class AddressBook(UserDict):
         for name, record in self.data.items():
             if record.birthday:
                 congratulation_date = None
-                birthday_date = record.birthday.value.replace(year=today_date.year).date()
+                birthday_date = record.birthday.value.replace(
+                    year=today_date.year
+                ).date()
                 timedelta_days = (birthday_date - today_date).days
 
                 if timedelta_days >= 0 and timedelta_days <= 7:
@@ -105,5 +115,12 @@ class AddressBook(UserDict):
                     else:
                         congratulation_date = birthday_date
                 if congratulation_date:
-                    upcoming_birthdays.append({"name": name, "congratulation_date": congratulation_date.strftime(DATE_FORMAT)})
+                    upcoming_birthdays.append(
+                        {
+                            "name": name,
+                            "congratulation_date": congratulation_date.strftime(
+                                DATE_FORMAT
+                            ),
+                        }
+                    )
         return upcoming_birthdays
