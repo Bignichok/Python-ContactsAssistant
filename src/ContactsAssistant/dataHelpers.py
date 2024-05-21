@@ -1,8 +1,8 @@
 import pickle
 
 from AddressBook import AddressBook
+from constants import FILENAME
 
-FILENAME = "./addressbook.pkl"
 
 def save_data(book, filename=FILENAME):
     """
@@ -20,6 +20,7 @@ def save_data(book, filename=FILENAME):
             pickle.dump(book, file)
     except Exception as e:
         raise Exception(f"Error saving data: {e}")
+
 
 def load_data(filename=FILENAME):
     """
