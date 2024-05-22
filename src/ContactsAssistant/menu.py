@@ -1,5 +1,6 @@
 """Class Menu module"""
 
+import difflib
 from enum import Enum
 from constants import MENU_BORDER
 from utils import format_cmd, format_param
@@ -25,7 +26,10 @@ class Menu(Enum):
     GET_CONTACT_BIRTHDAY = {"p": ["CONTACT_NAME"], "text": "to show birthday"}
     GET_CONTACT = {"p": ["CONTACT_NAME"], "text": "to find a contact by name"}
     GET_ALL_CONTACTS = {"p": [], "text": "to view a full contact list"}
-    GET_UPCOMING_BIRTHDAYS = {"p": [], "text": "to show all birthdays in this week"}
+    GET_UPCOMING_BIRTHDAYS = {
+        "p": ["DAYS AHEAD"],
+        "text": "to show all birthdays in this week",
+    }
     UPDATE_CONTACT_EMAIL = {"p": ["CONTACT_NAME", "EMAIL"], "text": "to update email"}
     NOTE_ADD = {"p": ["NOTE_SUBJECT", "NOTE_TEXT"], "text": "to add or update note"}
     NOTE_DEL = {"p": ["NOTE_SUBJECT"], "text": "to delete note"}
@@ -51,3 +55,21 @@ class Menu(Enum):
     def get_commands_list(cls) -> list:
         """Return all keys"""
         return [x.name.lower() for x in cls]
+
+    @classmethod
+    def get_commands_witn_args(cls) -> dict:
+        """Return all commands with params"""
+        commands = {}
+
+        for comand in cls:
+            commands[comand.name.lower()] = [x.lower() for x in comand.value["p"]]
+        return commands
+
+    @staticmethod
+    def suggest_similar_commands(input_command):
+        """
+        Suggests similar commands based on user input command.
+        """
+        available_commands = Menu.get_commands_list()
+        similar_commands = difflib.get_close_matches(input_command, available_commands)
+        return similar_commands

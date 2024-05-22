@@ -7,10 +7,11 @@ from menu import Menu
 from Record import Record
 from dataHelpers import save_data, load_data
 from prompt_toolkit import prompt
-from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.styles import Style
+from contactcompleter import ContactCompleter
 
-not_found_message = "Contact does not exist, you can add it"
+
+NOT_FOUND_MESSAGE = "Contact does not exist, you can add it"
 
 handler = Handler()
 
@@ -94,7 +95,7 @@ def change_contact(args, book: ContactsBook):
     name, old_number, new_number = args
     record = book.find(name)
     if record is None:
-        return not_found_message
+        return NOT_FOUND_MESSAGE
     else:
         record.edit_phone(old_number, new_number)
         return "Phone changed"
@@ -105,14 +106,14 @@ def update_contact_email(args, book: ContactsBook):
     name, email = args
     record = book.find(name)
     if record is None:
-        return not_found_message
+        return NOT_FOUND_MESSAGE
     else:
         record.add_email(email)
         return "Email changed"
 
 
 @handle_error
-def GET_CONTACT(args, book: ContactsBook):
+def get_contact(args, book: ContactsBook):
     """
     Show the phone number of a contact.
 
@@ -128,7 +129,7 @@ def GET_CONTACT(args, book: ContactsBook):
     name = args[0]
     record = book.find(name)
     if record is None:
-        return not_found_message
+        return NOT_FOUND_MESSAGE
     return record
 
 
@@ -150,7 +151,7 @@ def set_contact_birthday(args, book: ContactsBook):
         record.add_birthday(date)
         return "Birthday added."
     else:
-        return not_found_message
+        return NOT_FOUND_MESSAGE
 
 
 @handle_error
@@ -177,7 +178,28 @@ def get_contact_birthday(args, book: ContactsBook):
         else:
             return "Birthday not added to this contact."
     else:
-        return not_found_message
+        return NOT_FOUND_MESSAGE
+
+
+@handle_error
+def get_upcoming_birthdays(args, book: ContactsBook):
+    """
+    Show the birthday of a contact.
+
+    Args:
+        args (list): List containing the name of the contact.
+        book (ContactsBook): The address book containing the contact.
+
+    Returns:
+        str: The birthday date or a message indicating the birthday was not added or the contact was not found.
+    """
+    if len(args) > 0:
+        days = args[0]
+
+    if days:
+        return book.get_upcoming_birthdays(int(days))
+    else:
+        return book.get_upcoming_birthdays()
 
 
 def parse_input(user_input):
@@ -205,7 +227,7 @@ def main():
     print(handler.greeting())
     while True:
         style = Style.from_dict(INPUT_STYLE)
-        completer = WordCompleter(Menu.get_commands_list())
+        completer = ContactCompleter(Menu.get_commands_witn_args(), book)
         user_input = prompt("Enter a command >>> ", completer=completer, style=style)
         print()
 
@@ -229,18 +251,25 @@ def main():
             case "get_contact_birthday":
                 print(get_contact_birthday(args, book))
             case "get_contact":
-                print(GET_CONTACT(args, book))
+                print(get_contact(args, book))
             case "get_all_contacts":
                 print(book)
             case "get_upcoming_birthdays":
-                print(book.get_upcoming_birthdays())
+                print(*get_upcoming_birthdays(args, book), sep="\n")
             case "update_contact_email":
                 print(update_contact_email(args, book))
             case "help":
                 print("Allowed commands:")
-                print(Menu.get_commands_list())
+                print(*Menu.get_commands_list(), sep="\n")
             case _:
-                print("Invalid command.")
+                command = user_input.split()[0]
+                suggestions = Menu.suggest_similar_commands(command)
+                if suggestions:
+                    print(
+                        f"Command '{command}' not found. Did you mean: {', '.join(suggestions)}?"
+                    )
+                else:
+                    print(f"Command '{command}' not found.")
 
 
 if __name__ == "__main__":
