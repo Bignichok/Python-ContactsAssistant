@@ -1,5 +1,5 @@
 DATE_FORMAT = "%d.%m.%Y"
-FILENAME = "./contactbook.pkl"
+FILENAME = "./contactsbook.pkl"
 MENU_BORDER = f"{'-'*72}\n"
 DEMO_CONTACTS = 10
 GREETING_BANNER = """
