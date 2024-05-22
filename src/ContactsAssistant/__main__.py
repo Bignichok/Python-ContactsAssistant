@@ -1,6 +1,6 @@
 """Main App"""
 
-from contactBook import ContactBook
+from contactsBook import ContactsBook
 from constants import INPUT_STYLE
 from handler import Handler
 from menu import Menu
@@ -36,7 +36,7 @@ def handle_error(func):
 
 
 @handle_error
-def add_contact(args, book: ContactBook):
+def add_contact(args, book: ContactsBook):
     """
     Add a contact to the address book or update an existing contact.
 
@@ -62,7 +62,7 @@ def add_contact(args, book: ContactBook):
 
 
 @handle_error
-def delete_contact(args, book: ContactBook):
+def delete_contact(args, book: ContactsBook):
     """
     Removes an contact from address book.
 
@@ -80,7 +80,7 @@ def delete_contact(args, book: ContactBook):
 
 
 @handle_error
-def change_contact(args, book: ContactBook):
+def change_contact(args, book: ContactsBook):
     """
     Change the phone number of an existing contact.
 
@@ -101,7 +101,7 @@ def change_contact(args, book: ContactBook):
 
 
 @handle_error
-def update_contact_email(args, book: ContactBook):
+def update_contact_email(args, book: ContactsBook):
     name, email = args
     record = book.find(name)
     if record is None:
@@ -112,7 +112,7 @@ def update_contact_email(args, book: ContactBook):
 
 
 @handle_error
-def GET_CONTACT(args, book: ContactBook):
+def GET_CONTACT(args, book: ContactsBook):
     """
     Show the phone number of a contact.
 
@@ -133,7 +133,7 @@ def GET_CONTACT(args, book: ContactBook):
 
 
 @handle_error
-def set_contact_birthday(args, book: ContactBook):
+def set_contact_birthday(args, book: ContactsBook):
     """
     Add a birthday to a contact.
 
@@ -154,7 +154,7 @@ def set_contact_birthday(args, book: ContactBook):
 
 
 @handle_error
-def get_contact_birthday(args, book: ContactBook):
+def get_contact_birthday(args, book: ContactsBook):
     """
     Show the birthday of a contact.
 

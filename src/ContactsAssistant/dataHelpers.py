@@ -1,6 +1,6 @@
 import pickle
 
-from contactBook import ContactBook
+from contactsBook import ContactsBook
 from constants import FILENAME
 
 
@@ -39,6 +39,6 @@ def load_data(filename=FILENAME):
         with open(filename, "rb") as file:
             return pickle.load(file)
     except FileNotFoundError:
-        return ContactBook()
+        return ContactsBook()
     except Exception as e:
         raise Exception(f"Error loading data: {e}")
