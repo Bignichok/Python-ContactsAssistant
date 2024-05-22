@@ -9,7 +9,7 @@ def save_data(book, filename=FILENAME):
     Saves the address book data to a file using pickle.
 
     Args:
-        book (ContactBook): The address book object to be saved.
+        book (ContactsBook): The address book object to be saved.
         filename (str): The name of the file where the data will be saved. Defaults to FILENAME.
 
     Raises:
@@ -30,7 +30,7 @@ def load_data(filename=FILENAME):
         filename (str): The name of the file from which the data will be loaded. Defaults to FILENAME.
 
     Returns:
-        ContactBook: The loaded address book object. If the file does not exist, returns a new ContactBook instance.
+        ContactsBook: The loaded address book object. If the file does not exist, returns a new ContactsBook instance.
 
     Raises:
         Exception: If there is an error during the file operation other than FileNotFoundError.

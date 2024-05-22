@@ -42,7 +42,7 @@ def add_contact(args, book: ContactsBook):
 
     Args:
         args (list): List containing name and phone number.
-        book (ContactBook): The address book to add the contact to.
+        book (ContactsBook): The address book to add the contact to.
 
     Returns:
         str: Message indicating whether the contact was added or updated.
@@ -68,7 +68,7 @@ def delete_contact(args, book: ContactsBook):
 
     Args:
         args (list): List containing contact name.
-        book (ContactBook): The address book.
+        book (ContactsBook): The address book.
 
     Returns:
         str: Message indicating whether the contact was added or updated.
@@ -86,7 +86,7 @@ def change_contact(args, book: ContactsBook):
 
     Args:
         args (list): List containing name, old phone number, and new phone number.
-        book (ContactBook): The address book containing the contact.
+        book (ContactsBook): The address book containing the contact.
 
     Returns:
         str: Message indicating whether the phone number was changed or if the contact was not found.
@@ -118,7 +118,7 @@ def GET_CONTACT(args, book: ContactsBook):
 
     Args:
         args (list): List containing the name of the contact.
-        book (ContactBook): The address book containing the contact.
+        book (ContactsBook): The address book containing the contact.
 
     Returns:
         str or Record: The contact's record or a message indicating the contact was not found.
@@ -139,7 +139,7 @@ def set_contact_birthday(args, book: ContactsBook):
 
     Args:
         args (list): List containing name and birthday date.
-        book (ContactBook): The address book containing the contact.
+        book (ContactsBook): The address book containing the contact.
 
     Returns:
         str: Message indicating whether the birthday was added or if the contact was not found.
@@ -160,7 +160,7 @@ def get_contact_birthday(args, book: ContactsBook):
 
     Args:
         args (list): List containing the name of the contact.
-        book (ContactBook): The address book containing the contact.
+        book (ContactsBook): The address book containing the contact.
 
     Returns:
         str: The birthday date or a message indicating the birthday was not added or the contact was not found.
