@@ -1,9 +1,17 @@
+'''Main App'''
 from AddressBook import AddressBook
+from constants import INPUT_STYLE
+from handler import Handler
+from menu import Menu
 from Record import Record
 from dataHelpers import save_data, load_data
+from prompt_toolkit import prompt
+from prompt_toolkit.completion import WordCompleter
+from prompt_toolkit.styles import Style
 
 not_found_message = "Contact does not exist, you can add it"
 
+handler = Handler()
 
 def handle_error(func):
     """
@@ -178,26 +186,6 @@ def parse_input(user_input):
     cmd = cmd.strip().lower()
     return cmd, *args
 
-
-def get_allowed_commands():
-    return [
-        "close",
-        "exit",
-        "add",
-        "change",
-        "remove",
-        "all",
-        "phone",
-        "addphone",
-        "removephone",
-        "updatephone",
-        "add-birthday",
-        "show-birthday",
-        "change-email",
-        "birthdays",
-    ]
-
-
 def main():
     """
     Main function to run the assistant bot.
@@ -205,14 +193,18 @@ def main():
     Continuously prompts the user for commands and executes the appropriate function.
     """
     book = load_data()
-    print("Welcome to the assistant bot!")
+    print(handler.greeting())
     while True:
-        user_input = input("Enter a command: ")
+        style = Style.from_dict(INPUT_STYLE)
+        completer = WordCompleter(Menu.get_commands_list())
+        user_input = prompt("Enter a command >>> ", completer=completer,style=style)
+        print()
+
         command, *args = parse_input(user_input)
 
         match command:
             case "hello":
-                print("How can I help you?")
+                print(handler.hello())
             case "close" | "exit":
                 save_data(book)
                 print("Good bye!")
@@ -237,7 +229,7 @@ def main():
                 print(change_email(args, book))
             case "help":
                 print("Allowed commands:")
-                print(get_allowed_commands())
+                print(Menu.get_commands_list())
             case _:
                 print("Invalid command.")
 
