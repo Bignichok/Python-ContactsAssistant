@@ -109,25 +109,47 @@ def update_contact_email(args, book: AddressBook):
         return "Email changed"
 
 
-@handle_error
-def GET_CONTACT(args, book: AddressBook):
+def get_contact(args, book: AddressBook, search_by: str):
     """
-    Show the phone number of a contact.
+    Show the contact's record based on the search criteria.
 
     Args:
-        args (list): List containing the name of the contact.
+        args (list): List containing the search term (name, phone, or email).
         book (AddressBook): The address book containing the contact.
+        search_by (str): The type of search ('name', 'phone', 'email').
 
     Returns:
         str or Record: The contact's record or a message indicating the contact was not found.
     """
     if len(args) < 1:
-        return "Provide contact name please"
-    name = args[0]
-    record = book.find(name)
+        return f"Provide contact {search_by} please"
+    
+    search_term = args[0]
+    
+    if search_by == 'name':
+        record = book.find_by_name(search_term)
+    elif search_by == 'phone':
+        record = book.find_by_phone(search_term)
+    elif search_by == 'email':
+        record = book.find_by_email(search_term)
+    else:
+        return "Invalid search type specified"
+    
     if record is None:
-        return not_found_message
+        return "Contact not found"
     return record
+
+@handle_error
+def get_contact_by_name(args, book: AddressBook):
+    return get_contact(args, book, 'name')
+
+@handle_error
+def get_contact_by_phone(args, book: AddressBook):
+    return get_contact(args, book, 'phone')
+
+@handle_error
+def get_contact_by_email(args, book: AddressBook):
+    return get_contact(args, book, 'email')
 
 
 @handle_error
@@ -225,8 +247,12 @@ def main():
                 print(set_contact_birthday(args, book))
             case "get_contact_birthday":
                 print(get_contact_birthday(args, book))
-            case "get_contact":
-                print(GET_CONTACT(args, book))
+            case "get_contact_by_name":
+                print(get_contact_by_name(args, book))
+            case "get_contact_by_phone":
+                print(get_contact_by_phone(args, book))
+            case "get_contact_by_email":
+                print(get_contact_by_email(args, book))
             case "get_all_contacts":
                 print(book)
             case "get_upcoming_birthdays":
