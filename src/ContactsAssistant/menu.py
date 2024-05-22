@@ -6,14 +6,15 @@ from utils import format_cmd, format_param
 class Menu(Enum):
     '''Class'''
     HELLO                = {'p' : [],                                         'text' : 'to show command list'}
-    CONTACT_ADD          = {'p' : ['CONTACT_NAME','PHONE'],                   'text' : 'to add a new contact'}
-    CONTACT_UPD          = {'p' : ['CONTACT_NAME','OLD PHONE','NEW PHONE'],   'text' : 'to update a phone'}
-    CONTACT_DEL          = {'p' : ['CONTACT_NAME'],                           'text' : 'to delete contact'}
-    CONTACT_SET_BIRTHDAY = {'p' : ['CONTACT_NAME','BIRTHDAY'],                'text' : 'to set birthday'}
-    CONTACT_BIRTHDAY     = {'p' : ['CONTACT_NAME'],                           'text' : 'to show birthday'}
-    CONTACT_PHONE        = {'p' : ['CONTACT_NAME'],                           'text' : 'to find a phone by name'}
-    CONTACT_ALL          = {'p' : [],                                         'text' : 'to view a full contact list'}
-    BIRTHDAYS            = {'p' : ['CONTACT_NAME'],                           'text' : 'to show all birthdays in this week'}
+    ADD_CONTACT          = {'p' : ['CONTACT_NAME', 'PHONE', 'EMAIL'],                   'text' : 'to add a new contact'}
+    UPDATE_CONTACT          = {'p' : ['CONTACT_NAME','OLD PHONE','NEW PHONE'],   'text' : 'to update a phone'}
+    DELETE_CONTACT          = {'p' : ['CONTACT_NAME'],                           'text' : 'to delete contact'}
+    SET_CONTACT_BIRTHDAY = {'p' : ['CONTACT_NAME','BIRTHDAY DATE'],                'text' : 'to set birthday'}
+    GET_CONTACT_BIRTHDAY     = {'p' : ['CONTACT_NAME'],                           'text' : 'to show birthday'}
+    GET_CONTACT        = {'p' : ['CONTACT_NAME'],                           'text' : 'to find a contact by name'}
+    GET_ALL_CONTACTS          = {'p' : [],                                         'text' : 'to view a full contact list'}
+    GET_UPCOMING_BIRTHDAYS            = {'p' : [],                           'text' : 'to show all birthdays in this week'}
+    UPDATE_CONTACT_EMAIL        = {'p' : ['CONTACT_NAME', 'EMAIL'],                           'text' : 'to update email'}
     NOTE_ADD             = {'p' : ['NOTE_SUBJECT','NOTE_TEXT'],               'text' : 'to add or update note'}
     NOTE_DEL             = {'p' : ['NOTE_SUBJECT'],                           'text' : 'to delete note'}
     NOTE_TAG             = {'p' : ['NOTE_SUBJECT','TAG'],                     'text' : 'to add tag to note'}

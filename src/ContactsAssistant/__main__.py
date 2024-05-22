@@ -45,7 +45,7 @@ def add_contact(args, book: AddressBook):
     Returns:
         str: Message indicating whether the contact was added or updated.
     """
-    name, phone, email = args
+    name, phone = args
     record = book.find(name)
     message = "Contact updated."
     if record is None:
@@ -54,13 +54,13 @@ def add_contact(args, book: AddressBook):
         message = "Contact added."
     if phone:
         record.add_phone(phone)
-    if email:
-        record.add_email(email)
+    if len(args) > 2:
+        record.add_email(args[2])
     return message
 
 
 @handle_error
-def remove_contact(args, book: AddressBook):
+def delete_contact(args, book: AddressBook):
     """
     Removes an contact from address book.
 
@@ -99,7 +99,7 @@ def change_contact(args, book: AddressBook):
 
 
 @handle_error
-def change_email(args, book: AddressBook):
+def update_contact_email(args, book: AddressBook):
     name, email = args
     record = book.find(name)
     if record is None:
@@ -110,7 +110,7 @@ def change_email(args, book: AddressBook):
 
 
 @handle_error
-def show_phone(args, book: AddressBook):
+def GET_CONTACT(args, book: AddressBook):
     """
     Show the phone number of a contact.
 
@@ -121,6 +121,8 @@ def show_phone(args, book: AddressBook):
     Returns:
         str or Record: The contact's record or a message indicating the contact was not found.
     """
+    if len(args) < 1:
+        return "Provide contact name please"
     name = args[0]
     record = book.find(name)
     if record is None:
@@ -129,7 +131,7 @@ def show_phone(args, book: AddressBook):
 
 
 @handle_error
-def add_birthday(args, book: AddressBook):
+def set_contact_birthday(args, book: AddressBook):
     """
     Add a birthday to a contact.
 
@@ -150,7 +152,7 @@ def add_birthday(args, book: AddressBook):
 
 
 @handle_error
-def show_birthday(args, book: AddressBook):
+def get_contact_birthday(args, book: AddressBook):
     """
     Show the birthday of a contact.
 
@@ -161,7 +163,11 @@ def show_birthday(args, book: AddressBook):
     Returns:
         str: The birthday date or a message indicating the birthday was not added or the contact was not found.
     """
+
+    if len(args) < 1:
+        return "Provide contact name please"
     name = args[0]
+    
     record = book.find(name)
     if record:
         if record.birthday:
@@ -209,24 +215,24 @@ def main():
                 save_data(book)
                 print("Good bye!")
                 break
-            case "add":
+            case "add_contact":
                 print(add_contact(args, book))
-            case "change":
+            case "update_contact":
                 print(change_contact(args, book))
-            case "remove":
-                print(remove_contact(args, book))
-            case "phone":
-                print(show_phone(args, book))
-            case "all":
+            case "delete_contact":
+                print(delete_contact(args, book))
+            case "set_contact_birthday":
+                print(set_contact_birthday(args, book))
+            case "get_contact_birthday":
+                print(get_contact_birthday(args, book))
+            case "get_contact":
+                print(GET_CONTACT(args, book))
+            case "get_all_contacts":
                 print(book)
-            case "add-birthday":
-                print(add_birthday(args, book))
-            case "show-birthday":
-                print(show_birthday(args, book))
-            case "birthdays":
+            case "get_upcoming_birthdays":
                 print(book.get_upcoming_birthdays())
-            case "change-email":
-                print(change_email(args, book))
+            case "update_contact_email":
+                print(update_contact_email(args, book))
             case "help":
                 print("Allowed commands:")
                 print(Menu.get_commands_list())
