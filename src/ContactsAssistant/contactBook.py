@@ -17,7 +17,7 @@ def is_weekend_day(day: int) -> bool:
     return day > 4
 
 
-class AddressBook(UserDict):
+class ContactBook(UserDict):
     """
     A class to represent an address book that stores and manages records.
 

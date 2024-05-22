@@ -1,5 +1,6 @@
-'''Main App'''
-from AddressBook import AddressBook
+"""Main App"""
+
+from contactBook import ContactBook
 from constants import INPUT_STYLE
 from handler import Handler
 from menu import Menu
@@ -12,6 +13,7 @@ from prompt_toolkit.styles import Style
 not_found_message = "Contact does not exist, you can add it"
 
 handler = Handler()
+
 
 def handle_error(func):
     """
@@ -34,13 +36,13 @@ def handle_error(func):
 
 
 @handle_error
-def add_contact(args, book: AddressBook):
+def add_contact(args, book: ContactBook):
     """
     Add a contact to the address book or update an existing contact.
 
     Args:
         args (list): List containing name and phone number.
-        book (AddressBook): The address book to add the contact to.
+        book (ContactBook): The address book to add the contact to.
 
     Returns:
         str: Message indicating whether the contact was added or updated.
@@ -60,13 +62,13 @@ def add_contact(args, book: AddressBook):
 
 
 @handle_error
-def delete_contact(args, book: AddressBook):
+def delete_contact(args, book: ContactBook):
     """
     Removes an contact from address book.
 
     Args:
         args (list): List containing contact name.
-        book (AddressBook): The address book.
+        book (ContactBook): The address book.
 
     Returns:
         str: Message indicating whether the contact was added or updated.
@@ -78,13 +80,13 @@ def delete_contact(args, book: AddressBook):
 
 
 @handle_error
-def change_contact(args, book: AddressBook):
+def change_contact(args, book: ContactBook):
     """
     Change the phone number of an existing contact.
 
     Args:
         args (list): List containing name, old phone number, and new phone number.
-        book (AddressBook): The address book containing the contact.
+        book (ContactBook): The address book containing the contact.
 
     Returns:
         str: Message indicating whether the phone number was changed or if the contact was not found.
@@ -99,7 +101,7 @@ def change_contact(args, book: AddressBook):
 
 
 @handle_error
-def update_contact_email(args, book: AddressBook):
+def update_contact_email(args, book: ContactBook):
     name, email = args
     record = book.find(name)
     if record is None:
@@ -110,13 +112,13 @@ def update_contact_email(args, book: AddressBook):
 
 
 @handle_error
-def GET_CONTACT(args, book: AddressBook):
+def GET_CONTACT(args, book: ContactBook):
     """
     Show the phone number of a contact.
 
     Args:
         args (list): List containing the name of the contact.
-        book (AddressBook): The address book containing the contact.
+        book (ContactBook): The address book containing the contact.
 
     Returns:
         str or Record: The contact's record or a message indicating the contact was not found.
@@ -131,13 +133,13 @@ def GET_CONTACT(args, book: AddressBook):
 
 
 @handle_error
-def set_contact_birthday(args, book: AddressBook):
+def set_contact_birthday(args, book: ContactBook):
     """
     Add a birthday to a contact.
 
     Args:
         args (list): List containing name and birthday date.
-        book (AddressBook): The address book containing the contact.
+        book (ContactBook): The address book containing the contact.
 
     Returns:
         str: Message indicating whether the birthday was added or if the contact was not found.
@@ -152,13 +154,13 @@ def set_contact_birthday(args, book: AddressBook):
 
 
 @handle_error
-def get_contact_birthday(args, book: AddressBook):
+def get_contact_birthday(args, book: ContactBook):
     """
     Show the birthday of a contact.
 
     Args:
         args (list): List containing the name of the contact.
-        book (AddressBook): The address book containing the contact.
+        book (ContactBook): The address book containing the contact.
 
     Returns:
         str: The birthday date or a message indicating the birthday was not added or the contact was not found.
@@ -167,7 +169,7 @@ def get_contact_birthday(args, book: AddressBook):
     if len(args) < 1:
         return "Provide contact name please"
     name = args[0]
-    
+
     record = book.find(name)
     if record:
         if record.birthday:
@@ -192,6 +194,7 @@ def parse_input(user_input):
     cmd = cmd.strip().lower()
     return cmd, *args
 
+
 def main():
     """
     Main function to run the assistant bot.
@@ -203,7 +206,7 @@ def main():
     while True:
         style = Style.from_dict(INPUT_STYLE)
         completer = WordCompleter(Menu.get_commands_list())
-        user_input = prompt("Enter a command >>> ", completer=completer,style=style)
+        user_input = prompt("Enter a command >>> ", completer=completer, style=style)
         print()
 
         command, *args = parse_input(user_input)
