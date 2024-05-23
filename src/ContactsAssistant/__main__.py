@@ -1,5 +1,6 @@
-'''Main App'''
-from AddressBook import AddressBook
+"""Main App"""
+
+from contactsBook import ContactsBook
 from constants import INPUT_STYLE
 from handler import Handler
 from menu import Menu
@@ -12,6 +13,7 @@ from prompt_toolkit.styles import Style
 not_found_message = "Contact does not exist, you can add it"
 
 handler = Handler()
+
 
 def handle_error(func):
     """
@@ -34,13 +36,13 @@ def handle_error(func):
 
 
 @handle_error
-def add_contact(args, book: AddressBook):
+def add_contact(args, book: ContactsBook):
     """
     Add a contact to the address book or update an existing contact.
 
     Args:
         args (list): List containing name and phone number.
-        book (AddressBook): The address book to add the contact to.
+        book (ContactsBook): The address book to add the contact to.
 
     Returns:
         str: Message indicating whether the contact was added or updated.
@@ -60,13 +62,13 @@ def add_contact(args, book: AddressBook):
 
 
 @handle_error
-def delete_contact(args, book: AddressBook):
+def delete_contact(args, book: ContactsBook):
     """
     Removes an contact from address book.
 
     Args:
         args (list): List containing contact name.
-        book (AddressBook): The address book.
+        book (ContactsBook): The address book.
 
     Returns:
         str: Message indicating whether the contact was added or updated.
@@ -78,13 +80,13 @@ def delete_contact(args, book: AddressBook):
 
 
 @handle_error
-def change_contact(args, book: AddressBook):
+def change_contact(args, book: ContactsBook):
     """
     Change the phone number of an existing contact.
 
     Args:
         args (list): List containing name, old phone number, and new phone number.
-        book (AddressBook): The address book containing the contact.
+        book (ContactsBook): The address book containing the contact.
 
     Returns:
         str: Message indicating whether the phone number was changed or if the contact was not found.
@@ -99,7 +101,7 @@ def change_contact(args, book: AddressBook):
 
 
 @handle_error
-def update_contact_email(args, book: AddressBook):
+def update_contact_email(args, book: ContactsBook):
     name, email = args
     record = book.find(name)
     if record is None:
@@ -109,13 +111,14 @@ def update_contact_email(args, book: AddressBook):
         return "Email changed"
 
 
-def get_contact(args, book: AddressBook, search_by: str):
+@handle_error
+def get_contact(args, book: ContactsBook, search_by: str):
     """
     Show the contact's record based on the search criteria.
 
     Args:
         args (list): List containing the search term (name, phone, or email).
-        book (AddressBook): The address book containing the contact.
+        book (ContactsBook): The address book containing the contact.
         search_by (str): The type of search ('name', 'phone', 'email').
 
     Returns:
@@ -123,43 +126,46 @@ def get_contact(args, book: AddressBook, search_by: str):
     """
     if len(args) < 1:
         return f"Provide contact {search_by} please"
-    
+
     search_term = args[0]
-    
-    if search_by == 'name':
+
+    if search_by == "name":
         record = book.find_by_name(search_term)
-    elif search_by == 'phone':
+    elif search_by == "phone":
         record = book.find_by_phone(search_term)
-    elif search_by == 'email':
+    elif search_by == "email":
         record = book.find_by_email(search_term)
     else:
         return "Invalid search type specified"
-    
+
     if record is None:
         return "Contact not found"
     return record
 
-@handle_error
-def get_contact_by_name(args, book: AddressBook):
-    return get_contact(args, book, 'name')
 
 @handle_error
-def get_contact_by_phone(args, book: AddressBook):
-    return get_contact(args, book, 'phone')
-
-@handle_error
-def get_contact_by_email(args, book: AddressBook):
-    return get_contact(args, book, 'email')
+def get_contact_by_name(args, book: ContactsBook):
+    return get_contact(args, book, "name")
 
 
 @handle_error
-def set_contact_birthday(args, book: AddressBook):
+def get_contact_by_phone(args, book: ContactsBook):
+    return get_contact(args, book, "phone")
+
+
+@handle_error
+def get_contact_by_email(args, book: ContactsBook):
+    return get_contact(args, book, "email")
+
+
+@handle_error
+def set_contact_birthday(args, book: ContactsBook):
     """
     Add a birthday to a contact.
 
     Args:
         args (list): List containing name and birthday date.
-        book (AddressBook): The address book containing the contact.
+        book (ContactsBook): The address book containing the contact.
 
     Returns:
         str: Message indicating whether the birthday was added or if the contact was not found.
@@ -174,13 +180,13 @@ def set_contact_birthday(args, book: AddressBook):
 
 
 @handle_error
-def get_contact_birthday(args, book: AddressBook):
+def get_contact_birthday(args, book: ContactsBook):
     """
     Show the birthday of a contact.
 
     Args:
         args (list): List containing the name of the contact.
-        book (AddressBook): The address book containing the contact.
+        book (ContactsBook): The address book containing the contact.
 
     Returns:
         str: The birthday date or a message indicating the birthday was not added or the contact was not found.
@@ -189,7 +195,7 @@ def get_contact_birthday(args, book: AddressBook):
     if len(args) < 1:
         return "Provide contact name please"
     name = args[0]
-    
+
     record = book.find(name)
     if record:
         if record.birthday:
@@ -214,6 +220,7 @@ def parse_input(user_input):
     cmd = cmd.strip().lower()
     return cmd, *args
 
+
 def main():
     """
     Main function to run the assistant bot.
@@ -225,7 +232,7 @@ def main():
     while True:
         style = Style.from_dict(INPUT_STYLE)
         completer = WordCompleter(Menu.get_commands_list())
-        user_input = prompt("Enter a command >>> ", completer=completer,style=style)
+        user_input = prompt("Enter a command >>> ", completer=completer, style=style)
         print()
 
         command, *args = parse_input(user_input)

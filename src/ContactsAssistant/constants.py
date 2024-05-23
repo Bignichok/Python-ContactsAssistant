@@ -1,6 +1,6 @@
 DATE_FORMAT = "%d.%m.%Y"
-FILENAME = "./addressbook.pkl"
-MENU_BORDER = f"{'-'*72}{'\n'}"
+FILENAME = "./contactsbook.pkl"
+MENU_BORDER = f"{'-'*72}\n"
 DEMO_CONTACTS = 10
 GREETING_BANNER = """
   ___          _     _              _     _           _   
@@ -10,9 +10,11 @@ GREETING_BANNER = """
 | | | \__ \__ \ \__ \ || (_| | | | | |_  | |_) | (_) | |_ 
 \_| |_/___/___/_|___/\__\__,_|_| |_|\__| |_.__/ \___/ \__|
 """
-INPUT_STYLE = {'completion-menu.completion': 'bg:#008888 #ffffff',
-               'completion-menu.completion.current': 'bg:#00aaaa #000000',
-               'scrollbar.background': 'bg:#88aaaa',
-               'scrollbar.button': 'bg:#222222',
-               'prompt': '#47C959',
-               'prompt.arg.text': '#00aaaa'}
+INPUT_STYLE = {
+    "completion-menu.completion": "bg:#008888 #ffffff",
+    "completion-menu.completion.current": "bg:#00aaaa #000000",
+    "scrollbar.background": "bg:#88aaaa",
+    "scrollbar.button": "bg:#222222",
+    "prompt": "#47C959",
+    "prompt.arg.text": "#00aaaa",
+}

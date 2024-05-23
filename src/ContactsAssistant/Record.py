@@ -2,6 +2,8 @@ from Phone import Phone
 from Name import Name
 from Birthday import Birthday
 from Email import Email
+from address import Address, AddressType
+
 
 class Record:
     """
@@ -21,6 +23,7 @@ class Record:
         find_phone(number): Finds a phone number in the contact record.
         add_birthday(date): Adds a birthday to the contact record.
     """
+
     def __init__(self, name):
         """
         Initializes the Record instance with the given name.
@@ -31,7 +34,8 @@ class Record:
         self.name = Name(name)
         self.phones = []
         self.birthday = None
-        self.email = ''
+        self.email = ""
+        self.addresses = {}
 
     def __str__(self):
         """
@@ -43,6 +47,12 @@ class Record:
         result = f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}, email: {self.email}"
         if self.birthday:
             result += f", birthday: {self.birthday}"
+
+        if self.addresses:
+            result += ", addresses: "
+            for addr_type, address in self.addresses.items():
+                result += f"{addr_type.name}: {address}, "
+            result = result[:-2]  # Remove trailing comma and space
         return result
 
     def add_phone(self, number: str):
@@ -53,7 +63,7 @@ class Record:
             number (str): The phone number to be added.
         """
         self.phones.append(Phone(number))
-        
+
     def remove_phone(self, number: str):
         """
         Removes a phone number from the contact record.
@@ -61,8 +71,8 @@ class Record:
         Args:
             number (str): The phone number to be removed.
         """
-        self.phones = list(filter(lambda phone: phone == number,self.phones))
-        
+        self.phones = list(filter(lambda phone: phone == number, self.phones))
+
     def edit_phone(self, old_number: str, new_number: str):
         """
         Edits a phone number in the contact record.
@@ -81,8 +91,10 @@ class Record:
                 found = True
                 break
         if not found:
-            raise KeyError('Provided number does not exist or contact has no phone numbers.')
-        
+            raise KeyError(
+                "Provided number does not exist or contact has no phone numbers."
+            )
+
     def find_phone(self, number):
         """
         Finds a phone number in the contact record.
@@ -96,7 +108,7 @@ class Record:
         for phone in self.phones:
             if phone.value == number:
                 return phone
-            
+
     def add_birthday(self, date):
         """
         Adds a birthday to the contact record.
@@ -109,11 +121,75 @@ class Record:
     def add_email(self, email: str):
         """
         Adds and validates the user's email address.
-        
+
         Args:
             email (str): The email address to be validated and added.
-        
+
         Raises:
             ValueError: If the email address format is invalid.
         """
         self.email = Email(email)
+
+    def add_address(
+        self,
+        address_type: AddressType,
+        street=None,
+        city=None,
+        postal_code=None,
+        country=None,
+    ):
+        """
+        Add an address to the contact record.
+
+        Args:
+            address_type (AddressType): The type of address (HOME, WORK, OTHER).
+            street (str, optional): The street address.
+            city (str, optional): The city.
+            postal_code (str, optional): The postal code.
+            country (str, optional): The country.
+        """
+        self.addresses[address_type] = Address(street, city, postal_code, country)
+
+    def edit_address(
+        self,
+        address_type: AddressType,
+        street=None,
+        city=None,
+        postal_code=None,
+        country=None,
+    ):
+        """
+        Edit the address of the contact record.
+
+        Args:
+            address_type (AddressType): The type of address (HOME, WORK, OTHER).
+            street (str, optional): The street address.
+            city (str, optional): The city.
+            postal_code (str, optional): The postal code.
+            country (str, optional): The country.
+
+        Raises:
+            ValueError: If no address exists to edit.
+        """
+        if address_type in self.addresses:
+            address = self.addresses[address_type]
+            if street is not None:
+                address.street = street
+            if city is not None:
+                address.city = city
+            if postal_code is not None:
+                address.postal_code = postal_code
+            if country is not None:
+                address.country = country
+        else:
+            raise ValueError("No address exists to edit.")
+
+    def remove_address(self, address_type: AddressType):
+        """
+        Remove the address of the specified type from the contact record.
+
+        Args:
+            address_type (AddressType): The type of address to remove (HOME, WORK, OTHER).
+        """
+        if address_type in self.addresses:
+            del self.addresses[address_type]
