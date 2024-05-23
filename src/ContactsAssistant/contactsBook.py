@@ -58,7 +58,7 @@ class ContactsBook(UserDict):
             raise KeyError(f"Record with name '{record.name.value}' already exists.")
         self.data[record.name.value] = record
 
-    def find(self, name: str):
+    def find_by_name(self, name: str):
         """
         Finds and returns a record by name.
 
@@ -72,6 +72,36 @@ class ContactsBook(UserDict):
             return self.data[name]
         else:
             return None
+        
+    def find_by_phone(self, phone: str):
+        """
+        Finds and returns a record by phone number.
+
+        Args:
+            phone (str): The phone number of the record to find.
+
+        Returns:
+            The record if found, otherwise None.
+        """
+        for record in self.data.values():
+            if record.find_phone(phone):
+                return record
+        return None
+
+    def find_by_email(self, email: str):
+        """
+        Finds and returns a record by email address.
+
+        Args:
+            email (str): The email address of the record to find.
+
+        Returns:
+            The record if found, otherwise None.
+        """
+        for record in self.data.values():
+            if record.email.value == email:
+                return record
+        return None
 
     def delete(self, name):
         """
