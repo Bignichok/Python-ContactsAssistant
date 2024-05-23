@@ -65,10 +65,6 @@ class Menu(Enum):
     def get_commands_witn_args(cls) -> dict:
         """Return all commands with params"""
         commands = {x.name.lower().strip() : x.value[1] for x in cls}
-
-
-        # for comand in cls:
-        #     commands[comand.name.lower()] = [x.lower() for x in cls(command).value(1)]
         return commands
 
     @staticmethod
