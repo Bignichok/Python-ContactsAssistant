@@ -8,6 +8,7 @@ from prompt_toolkit.styles import Style
 
 handler = Handler()
 
+
 def parse_input(user_input):
     """
     Parse user input into a command and its arguments.
@@ -29,17 +30,19 @@ def main():
 
     Continuously prompts the user for commands and executes the appropriate function.
     """
-    handler = Handler()
     print(handler.greeting())
     while True:
         style = Style.from_dict(INPUT_STYLE)
-        user_input = prompt("Enter a command >>> ", completer=handler.completer, style=style)
+        user_input = prompt(
+            "Enter a command >>> ", completer=handler.completer, style=style
+        )
         command, *args = parse_input(user_input)
         print(handler.execute(command, args))
         print()
         if command in (Menu.EXIT, Menu.CLOSE):
             break
         print()
+
 
 if __name__ == "__main__":
     main()
