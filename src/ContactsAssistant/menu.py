@@ -11,7 +11,9 @@ class Menu(Enum):
     DELETE_CONTACT          = {'p' : ['CONTACT_NAME'],                           'text' : 'to delete contact'}
     SET_CONTACT_BIRTHDAY = {'p' : ['CONTACT_NAME','BIRTHDAY DATE'],                'text' : 'to set birthday'}
     GET_CONTACT_BIRTHDAY     = {'p' : ['CONTACT_NAME'],                           'text' : 'to show birthday'}
-    GET_CONTACT        = {'p' : ['CONTACT_NAME'],                           'text' : 'to find a contact by name'}
+    GET_CONTACT_BY_NAME        = {'p' : ['CONTACT_NAME'],                           'text' : 'to find a contact by name'}
+    GET_CONTACT_BY_PHONE       = {'p' : ['PHONE'],                           'text' : 'to find a contact by phone'}
+    GET_CONTACT_BY_EMAIL        = {'p' : ['EMAIL'],                           'text' : 'to find a contact by email'}
     GET_ALL_CONTACTS          = {'p' : [],                                         'text' : 'to view a full contact list'}
     GET_UPCOMING_BIRTHDAYS            = {'p' : [],                           'text' : 'to show all birthdays in this week'}
     UPDATE_CONTACT_EMAIL        = {'p' : ['CONTACT_NAME', 'EMAIL'],                           'text' : 'to update email'}
