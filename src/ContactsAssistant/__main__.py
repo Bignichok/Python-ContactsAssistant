@@ -1,13 +1,13 @@
 """Main App"""
 
+import shlex
+import argparse
 from constants import INPUT_STYLE
 from handler import Handler
 from menu import Menu
 from prompt_toolkit import prompt
 from prompt_toolkit.styles import Style
 from prompt_toolkit.history import InMemoryHistory
-import shlex
-import argparse
 
 handler = Handler()
 
