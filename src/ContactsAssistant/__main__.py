@@ -1,10 +1,12 @@
-'''Main App'''
+"""Main App"""
+
 from constants import INPUT_STYLE
 from handler import Handler
 from menu import Menu
 from prompt_toolkit import prompt
-from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.styles import Style
+
+handler = Handler()
 
 def parse_input(user_input):
     """
@@ -20,6 +22,7 @@ def parse_input(user_input):
     cmd = Menu.get_by_name(cmd)
     return cmd, *args
 
+
 def main():
     """
     Main function to run the assistant bot.
@@ -30,13 +33,13 @@ def main():
     print(handler.greeting())
     while True:
         style = Style.from_dict(INPUT_STYLE)
-        completer = WordCompleter(Menu.get_commands_list())
-        user_input = prompt("Enter a command >>> ", completer=completer,style=style)
+        user_input = prompt("Enter a command >>> ", completer=handler.completer, style=style)
         command, *args = parse_input(user_input)
         print(handler.execute(command, args))
         print()
         if command in (Menu.EXIT, Menu.CLOSE):
             break
+        print()
 
 if __name__ == "__main__":
     main()

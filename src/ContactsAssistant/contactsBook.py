@@ -1,7 +1,6 @@
-from datetime import datetime, timedelta
+from datetime import date
 from collections import UserDict
-
-from constants import DATE_FORMAT
+from datehelper import DateHelper
 
 
 def is_weekend_day(day: int) -> bool:
@@ -17,7 +16,7 @@ def is_weekend_day(day: int) -> bool:
     return day > 4
 
 
-class AddressBook(UserDict):
+class ContactsBook(UserDict):
     """
     A class to represent an address book that stores and manages records.
 
@@ -59,7 +58,7 @@ class AddressBook(UserDict):
             raise KeyError(f"Record with name '{record.name.value}' already exists.")
         self.data[record.name.value] = record
 
-    def find(self, name: str):
+    def find_by_name(self, name: str):
         """
         Finds and returns a record by name.
 
@@ -73,6 +72,36 @@ class AddressBook(UserDict):
             return self.data[name]
         else:
             return None
+        
+    def find_by_phone(self, phone: str):
+        """
+        Finds and returns a record by phone number.
+
+        Args:
+            phone (str): The phone number of the record to find.
+
+        Returns:
+            The record if found, otherwise None.
+        """
+        for record in self.data.values():
+            if record.find_phone(phone):
+                return record
+        return None
+
+    def find_by_email(self, email: str):
+        """
+        Finds and returns a record by email address.
+
+        Args:
+            email (str): The email address of the record to find.
+
+        Returns:
+            The record if found, otherwise None.
+        """
+        for record in self.data.values():
+            if record.email.value == email:
+                return record
+        return None
 
     def delete(self, name):
         """
@@ -90,37 +119,29 @@ class AddressBook(UserDict):
         else:
             return None
 
-    def get_upcoming_birthdays(self):
+    def get_upcoming_birthdays(self, days=7):
         """
-        Returns a list of upcoming birthdays within the next 7 days.
+        Get a list of upcoming birthdays within the specified number of days.
         If a birthday falls on a weekend, the congratulation date is moved to the next Monday.
+        Args:
+            days (int): The number of days to look ahead for upcoming birthdays. Defaults to 7.
+
         Returns:
             list: A list of dictionaries with names and congratulation dates for upcoming birthdays.
         """
+        today = date.today()
         upcoming_birthdays = []
-        today_date = datetime.today().date()
-        for name, record in self.data.items():
-            if record.birthday:
-                congratulation_date = None
-                birthday_date = record.birthday.value.replace(
-                    year=today_date.year
-                ).date()
-                timedelta_days = (birthday_date - today_date).days
+        for contact in list(
+            filter(lambda x: x.birthday is not None, self.data.values())
+        ):
+            next_contact_birthday = DateHelper.get_next_birthday(
+                contact.birthday.value, today
+            )
 
-                if timedelta_days >= 0 and timedelta_days <= 7:
-                    weekday = birthday_date.weekday()
-                    if is_weekend_day(weekday):
-                        days_delta = 2 if weekday == 5 else 1
-                        congratulation_date = birthday_date + timedelta(days=days_delta)
-                    else:
-                        congratulation_date = birthday_date
-                if congratulation_date:
-                    upcoming_birthdays.append(
-                        {
-                            "name": name,
-                            "congratulation_date": congratulation_date.strftime(
-                                DATE_FORMAT
-                            ),
-                        }
-                    )
+            diffdays = (next_contact_birthday - today).days
+            if diffdays in range(0, days):
+                upcoming_birthdays.append(
+                    f"Contact name: {contact.name.value}, congratulation date: {DateHelper.get_formated_workday(next_contact_birthday)}"
+                )
+
         return upcoming_birthdays

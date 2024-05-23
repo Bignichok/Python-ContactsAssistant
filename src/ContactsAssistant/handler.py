@@ -1,12 +1,13 @@
 '''Handler module'''
+from contactcompleter import ContactCompleter
 from constants import GREETING_BANNER
 from menu import Menu
 from utils import format_greeting
 from dataHelpers import save_data, load_data
-from AddressBook import AddressBook
+from contactsBook import ContactsBook
 from Record import Record
 
-not_found_message = "Contact does not exist, you can add it"
+NOT_FOUND_MESSAGE = "Contact does not exist, you can add it"
 
 def handle_error(func):
     """
@@ -31,7 +32,8 @@ class Handler():
     def __init__(self) -> None:
         self.contact_book = load_data()
         if not self.contact_book:
-            self.contact_book = AddressBook()
+            self.contact_book = ContactsBook()
+            self.completer = ContactCompleter(Menu.get_commands_witn_args(), self.contact_book)
 
     def greeting(self) -> str:
         '''Print greeting message'''
@@ -56,7 +58,7 @@ class Handler():
             str: Message indicating whether the contact was added or updated.
         """
         name, phone, *_ = args
-        record = self.contact_book.find(name)
+        record = self.contact_book.find_by_name(name)
         message = "Contact updated."
         if record is None:
             record = Record(name)
@@ -81,9 +83,9 @@ class Handler():
             str: Message indicating whether the phone number was changed or if the contact was not found.
         """
         name, old_number, new_number = args
-        record = self.contact_book.find(name)
+        record = self.contact_book.find_by_name(name)
         if record is None:
-            return not_found_message
+            return NOT_FOUND_MESSAGE
         record.edit_phone(old_number, new_number)
         return "Phone changed"
     
@@ -117,11 +119,11 @@ class Handler():
             str: Message indicating whether the birthday was added or if the contact was not found.
         """
         name, date = args
-        record = self.contact_book.find(name)
+        record = self.contact_book.find_by_name(name)
         if record:
             record.add_birthday(date)
             return "Birthday added."
-        return not_found_message
+        return NOT_FOUND_MESSAGE
 
     @handle_error
     def get_contact_birthday(self, args):
@@ -139,14 +141,14 @@ class Handler():
         if len(args) < 1:
             return "Provide contact name please"
         name = args[0]
-        record = self.contact_book.find(name)
+        record = self.contact_book.find_by_name(name)
         if record:
             if record.birthday:
                 return record.birthday
             else:
                 return "Birthday not added to this contact."
         else:
-            return not_found_message
+            return NOT_FOUND_MESSAGE
 
     @handle_error
     def get_upcoming_birthdays(self, args):
@@ -173,9 +175,9 @@ class Handler():
             str: Message indicating whether the contact e-mail was updated.
         """
         name, email = args
-        record = self.contact_book.find(name)
+        record = self.contact_book.find_by_name(name)
         if record is None:
-            return not_found_message
+            return NOT_FOUND_MESSAGE
         else:
             record.add_email(email)
             return "Email changed"
@@ -194,10 +196,24 @@ class Handler():
         if len(args) < 1:
             return "Provide contact name please"
         name = args[0]
-        record = self.contact_book.find(name)
+        record = self.contact_book.find_by_name(name)
         if record is None:
-            return not_found_message
+            return NOT_FOUND_MESSAGE
         return record
+    
+    @handle_error
+    def get_contact_by_name(self, args, book: ContactsBook):
+        return self.contact_book.get_contact(args, book, "name")
+
+    @handle_error
+    def get_contact_by_phone(self, args, book: ContactsBook):
+        return self.contact_book.get_contact(args, book, "phone")
+
+
+    @handle_error
+    def get_contact_by_email(self, args, book: ContactsBook):
+        return self.contact_book.get_contact(args, book, "email")
+
 
     def close(self, args) -> str:
         '''Print hello message'''
@@ -212,7 +228,7 @@ class Handler():
                 Menu.DELETE_CONTACT         : self.delete_contact,
                 Menu.SET_CONTACT_BIRTHDAY   : self.set_contact_birthday,
                 Menu.GET_CONTACT_BIRTHDAY   : self.get_contact_birthday,
-                Menu.GET_CONTACT            : self.get_contact,
+                Menu.GET_CONTACT_BY_NAME    : self.get_contact,
                 Menu.GET_ALL_CONTACTS       : None,
                 Menu.GET_UPCOMING_BIRTHDAYS : self.get_upcoming_birthdays,
                 Menu.UPDATE_CONTACT_EMAIL   : self.update_contact_email,
@@ -241,3 +257,6 @@ class Handler():
             return "Invalid command."
         Menu.check_params(command, args)
         return self.compliance_list().get(command)(args)
+    
+        
+        
