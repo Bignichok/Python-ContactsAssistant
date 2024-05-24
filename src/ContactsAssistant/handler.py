@@ -2,12 +2,13 @@
 
 from address import AddressType
 from command_completer import CommandCompleter
-from constants import GREETING_BANNER
+from constants import GREETING_BANNER, CONTACTS_BOOK_FILENAME, NOTEBOOK_FILENAME
 from menu import Menu
 from utils import format_greeting
-from dataHelpers import save_data, load_data
 from contactsBook import ContactsBook
 from Record import Record
+from notebook import Notebook
+from note import Note
 
 NOT_FOUND_MESSAGE = "Contact does not exist, you can add it"
 
@@ -15,9 +16,9 @@ NOT_FOUND_MESSAGE = "Contact does not exist, you can add it"
 def handle_error(func):
     """
     Decorator to handle exceptions in the wrapped function.
-     Args:
+    Args:
         func (function): The function to wrap with error handling.
-     Returns:
+    Returns:
         function: The wrapped function with error handling.
     """
 
@@ -42,12 +43,16 @@ class Handler:
         return value
 
     def __init__(self) -> None:
-        self.contact_book = load_data()
+        self.contact_book = ContactsBook.load_from_file(CONTACTS_BOOK_FILENAME)
+        self.notebook = Notebook.load_from_file(NOTEBOOK_FILENAME)
+
         if not self.contact_book:
             self.contact_book = ContactsBook()
+
         self.completer = CommandCompleter(
             Menu.get_commands_witn_args(), self.contact_book
         )
+
 
     def greeting(self) -> str:
         """Print greeting message"""
@@ -305,10 +310,147 @@ class Handler:
     @handle_error
     def get_contact_by_email(self, args):
         return self.get_contact(args, "email")
+    
+    @handle_error
+    def add_note(self, args):
+        """
+        Add a note to the notebook via user prompt.
+
+        Returns:
+            str: Message indicating whether the note was added or not.
+        """
+        title = input("Enter title: ")
+        content = input("Enter content: ")
+        tags = input("Enter tags (comma-separated): ").split(",")
+        due_date = input("Enter due date (DD.MM.YYYY, optional): ").strip()
+        due_date = due_date if due_date else None
+        note = Note(title=title, content=content, tags=[tag.strip() for tag in tags], due_date=due_date)
+        return self.notebook.add(note)
+    
+    @handle_error
+    def find_note(self, args):
+        """
+        Find and Show the details of a note.
+        Args:
+            args (Namespace): Namespace containing the title of the note.
+        Returns:
+            str or Note: The note's details or a message indicating the note was not found.
+        """
+
+        title = args.title
+        notes = self.notebook.search(title)
+        if notes:
+            return self.notebook.format_notes_with_frame(notes)
+        else:
+            return f"Note {title} not found."
+        
+    @handle_error
+    def delete_note(self, args):
+        """
+        Delete a note from the notebook.
+        Args:
+            args (Namespace): Namespace containing the title of the note.
+        Returns:
+            str: Message indicating whether the note was deleted or not.
+        """
+
+        return self.notebook.remove(args.title)
+    
+    @handle_error
+    def delete_all_notes(self, args):
+        """
+        Delete all notes from the notebook.
+        Args:
+            args (Namespace): Namespace of arguments.
+            notebook (Notebook): The notebook containing the notes.
+        Returns:
+            str: Message indicating whether the notes were deleted or not.
+        """
+        return self.notebook.remove_all()
+    
+    @handle_error
+    def update_note_prompt(self, args):
+        """
+        Update a note by title in the notebook via user prompt.
+        Args:
+            args (Namespace): Namespace containing the title of the note.
+        Returns:
+            str: Message indicating whether the note was updated or not.
+        """
+
+        title = args.title
+        content = input("Enter new content: ")
+        tags = input("Enter new tags (comma-separated): ").split(",")
+        due_date = input("Enter new due date (DD.MM.YYYY, optional): ").strip()
+        due_date = due_date if due_date else None
+        new_note = Note(title=title, content=content, tags=[tag.strip() for tag in tags], due_date=due_date)
+        return self.notebook.update(title, new_note)
+    
+    @handle_error
+    def search_notes(self, args):
+        """
+        Search for notes containing the query in their title or content.
+        Args:
+            args (Namespace): Namespace containing the search query.
+        Returns:
+            str: Search results or a message indicating no notes were found.
+        """
+
+        query = args.query
+        results = self.notebook.search(query)
+        if results:
+            return self.notebook.format_notes_with_frame(results)
+        else:
+            return f"No notes found containing '{query}'."
+        
+    @handle_error
+    def filter_notes(self, args):
+        """
+        Filter notes by tag.
+        Args:
+            args (Namespace): Namespace containing the tag to filter by.
+        Returns:
+            str: Filter results or a message indicating no notes were found.
+        """
+
+        tag = args.tag
+        results = self.notebook.filter_by_tag(tag)
+        if results:
+            return self.notebook.format_notes_with_frame(results)
+        else:
+            return f"No notes found with tag '{tag}'."
+        
+    @handle_error
+    def get_notes_in_days(self, args):
+        """
+        Get notes that are due in the next specified number of days.
+        Args:
+            args (Namespace): Namespace containing the number of days to look ahead.
+        Returns:
+            str: List of due notes or a message indicating no notes are due.
+        """
+
+        days = int(args.days)
+        results = self.notebook.notes_due_in_days(days)
+        if results:
+            return self.notebook.format_notes_with_frame(results)
+        else:
+            return f"No notes due in the next {days} days."
+        
+    @handle_error
+    def print_all_notes(self, args):
+        """
+        Print all notes in the notebook.
+        Returns:
+            str: String representation of all notes.
+        """
+        return self.notebook.print_all_notes()
 
     def close(self) -> str:
-        """return bye message"""
-        save_data(self.contact_book)
+        """return bye message and save data to files"""
+        self.notebook.save_to_file(NOTEBOOK_FILENAME)
+        self.contact_book.save_to_file(CONTACTS_BOOK_FILENAME)
+
         return "Good bye!"
 
     def __compliance_list(self) -> dict:
@@ -326,11 +468,15 @@ class Handler:
             Menu.UPDATE_CONTACT_EMAIL: self.update_contact_email,
             Menu.ADD_ADDRESS: self.add_address,
             Menu.DELETE_ADDRESS: self.remove_address,
-            Menu.NOTE_ADD: None,
-            Menu.NOTE_DEL: None,
-            Menu.NOTE_TAG: None,
-            Menu.NOTE_TAG_DEL: None,
-            Menu.NOTE_ALL: None,
+            Menu.ADD_NOTE: self.add_note,
+            Menu.FIND_NOTE: self.find_note,
+            Menu.DELETE_NOTE: self.delete_note,
+            Menu.DELETE_ALL_NOTES: self.delete_all_notes,
+            Menu.UPDATE_NOTE: self.update_note_prompt,
+            Menu.SEARCH_NOTES: self.search_notes,
+            Menu.FILTER_NOTES_BY_TAG: self.filter_notes,
+            Menu.GET_NOTES_IN_DAYS: self.get_notes_in_days,
+            Menu.GET_ALL_NOTES: self.print_all_notes
         }
 
     def __without_params_commands(self) -> dict:

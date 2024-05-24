@@ -114,26 +114,15 @@ class Menu(Enum):
         ],
         "remove the contact address",
     )
-    NOTE_ADD = Command(
-        2,
-        [
-            Parametr("subject", True, "note subject"),
-            Parametr("text", True, "note body"),
-        ],
-        "to add or update note",
-    )
-    NOTE_DEL = Command(1, [Parametr("subject", True, "note subject")], "to delete note")
-    NOTE_TAG = Command(
-        2,
-        [Parametr("subject", True, "note subject"), Parametr("tag", True, "note tag")],
-        "to add tag to note",
-    )
-    NOTE_TAG_DEL = Command(
-        2,
-        [Parametr("subject", True, "note subject"), Parametr("tag", True, "note tag")],
-        "to delete note tag",
-    )
-    NOTE_ALL = Command(0, [], "to view a full note list")
+    ADD_NOTE = Command(0, [], "to add note")
+    FIND_NOTE = Command(1, [Parametr("title", True, "note title")], "to find note by title")
+    DELETE_NOTE = Command(1, [Parametr("title", True, "note title")], "to delete note")
+    DELETE_ALL_NOTES = Command(0, [], "to delete all notes")
+    UPDATE_NOTE = Command(1, [Parametr("title", True, "note title")], "to update note by title")
+    SEARCH_NOTES = Command(1, [Parametr("query", True, "search query")], "Search for notes containing the query in their title or content.")
+    FILTER_NOTES_BY_TAG = Command(1, [Parametr("tag", True, "tag to filer")], "Filter notes by tag.")
+    GET_NOTES_IN_DAYS = Command(1, [Parametr("days", True, "note subject")], "Get notes that are due in the next specified number of days.",)
+    GET_ALL_NOTES = Command(0, [], "to view a full notes list")
     EXIT = Command(0, [], "to app close")
     CLOSE = Command(0, [], "to close application")
 
