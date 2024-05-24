@@ -33,8 +33,8 @@ class Menu(Enum):
         3,
         [
             Parametr("name", True, "contact name"),
-            Parametr("oldphone", False, "old phone number"),
-            Parametr("newphone", False, "new phone number in format XXXXXXXXXX"),
+            Parametr("oldphone", True, "old phone number"),
+            Parametr("newphone", True, "new phone number in format XXXXXXXXXX"),
         ],
         "to update a phone",
     )
@@ -84,13 +84,13 @@ class Menu(Enum):
         ],
         "to update email",
     )
-    ADDRESS = Command(
+    ADD_ADDRESS = Command(
         2,
         [
             Parametr("name", True, "contact name"),
             Parametr(
                 "addresstype",
-                True,
+                False,
                 "address type (Home,Work,Other)",
                 ["Home", "Work", "Other"],
             ),
@@ -107,7 +107,7 @@ class Menu(Enum):
             Parametr("name", True, "contact name"),
             Parametr(
                 "addresstype",
-                True,
+                False,
                 "address type (Home,Work,Other)",
                 ["Home", "Work", "Other"],
             ),
