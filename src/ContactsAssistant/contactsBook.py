@@ -37,11 +37,6 @@ class ContactsBook(UserDict):
         Returns:
             str: A string with each record in the address book on a new line.
         """
-        # lines = []
-
-        #  for _, record in self.data.items():
-        #    lines.append(f"{record}")
-
         return self.__format_book()
 
     def __format_book(self):
@@ -53,7 +48,10 @@ class ContactsBook(UserDict):
         """
         contact_list = self.data.values()
         # Calculate the maximum width of each column
-        name_width = max(len(str(contact.name)) for contact in contact_list)
+        name_width = max(
+            (len(str(contact.name)) for contact in contact_list),
+            default=10,
+        )
         phone_width = max(
             list(
                 len(str(phone)) for contact in contact_list for phone in contact.phones
