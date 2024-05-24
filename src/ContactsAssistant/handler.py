@@ -53,7 +53,6 @@ class Handler:
             Menu.get_commands_witn_args(), self.contact_book
         )
 
-
     def greeting(self) -> str:
         """Print greeting message"""
         res = f"{format_greeting(GREETING_BANNER)}\n"
@@ -286,15 +285,15 @@ class Handler:
         Returns:
             str or Record: The contact's record or a message indicating the contact was not found.
         """
-        if search_by == 'name':
+        if search_by == "name":
             record = self.contact_book.find_by_name(args.name)
-        elif search_by == 'phone':
+        elif search_by == "phone":
             record = self.contact_book.find_by_phone(args.phone)
-        elif search_by == 'email':
+        elif search_by == "email":
             record = self.contact_book.find_by_email(args.email)
         else:
             return "Invalid search type specified"
-            
+
         if record is None:
             return NOT_FOUND_MESSAGE
         return record
@@ -305,12 +304,12 @@ class Handler:
 
     @handle_error
     def get_contact_by_phone(self, args):
-        return self.get_contact(args,  "phone")
+        return self.get_contact(args, "phone")
 
     @handle_error
     def get_contact_by_email(self, args):
         return self.get_contact(args, "email")
-    
+
     @handle_error
     def add_note(self, args):
         """
@@ -324,9 +323,14 @@ class Handler:
         tags = input("Enter tags (comma-separated): ").split(",")
         due_date = input("Enter due date (DD.MM.YYYY, optional): ").strip()
         due_date = due_date if due_date else None
-        note = Note(title=title, content=content, tags=[tag.strip() for tag in tags], due_date=due_date)
+        note = Note(
+            title=title,
+            content=content,
+            tags=[tag.strip() for tag in tags],
+            due_date=due_date,
+        )
         return self.notebook.add(note)
-    
+
     @handle_error
     def find_note(self, args):
         """
@@ -343,7 +347,7 @@ class Handler:
             return self.notebook.format_notes_with_frame(notes)
         else:
             return f"Note {title} not found."
-        
+
     @handle_error
     def delete_note(self, args):
         """
@@ -355,7 +359,7 @@ class Handler:
         """
 
         return self.notebook.remove(args.title)
-    
+
     @handle_error
     def delete_all_notes(self, args):
         """
@@ -367,7 +371,7 @@ class Handler:
             str: Message indicating whether the notes were deleted or not.
         """
         return self.notebook.remove_all()
-    
+
     @handle_error
     def update_note_prompt(self, args):
         """
@@ -383,9 +387,14 @@ class Handler:
         tags = input("Enter new tags (comma-separated): ").split(",")
         due_date = input("Enter new due date (DD.MM.YYYY, optional): ").strip()
         due_date = due_date if due_date else None
-        new_note = Note(title=title, content=content, tags=[tag.strip() for tag in tags], due_date=due_date)
+        new_note = Note(
+            title=title,
+            content=content,
+            tags=[tag.strip() for tag in tags],
+            due_date=due_date,
+        )
         return self.notebook.update(title, new_note)
-    
+
     @handle_error
     def search_notes(self, args):
         """
@@ -402,7 +411,7 @@ class Handler:
             return self.notebook.format_notes_with_frame(results)
         else:
             return f"No notes found containing '{query}'."
-        
+
     @handle_error
     def filter_notes(self, args):
         """
@@ -419,7 +428,7 @@ class Handler:
             return self.notebook.format_notes_with_frame(results)
         else:
             return f"No notes found with tag '{tag}'."
-        
+
     @handle_error
     def get_notes_in_days(self, args):
         """
@@ -436,7 +445,7 @@ class Handler:
             return self.notebook.format_notes_with_frame(results)
         else:
             return f"No notes due in the next {days} days."
-        
+
     @handle_error
     def print_all_notes(self, args):
         """
@@ -476,7 +485,7 @@ class Handler:
             Menu.SEARCH_NOTES: self.search_notes,
             Menu.FILTER_NOTES_BY_TAG: self.filter_notes,
             Menu.GET_NOTES_IN_DAYS: self.get_notes_in_days,
-            Menu.GET_ALL_NOTES: self.print_all_notes
+            Menu.GET_ALL_NOTES: self.print_all_notes,
         }
 
     def __without_params_commands(self) -> dict:
@@ -503,7 +512,10 @@ class Handler:
         if command is None:
             return ""
 
+        if len(command.value.param_list) != 0 and args is None:
+            return ""
+
         if command in self.__without_params_commands():
             return self.__without_params_commands().get(command)()
-        else:
-            return self.__compliance_list().get(command)(args)
+
+        return self.__compliance_list().get(command)(args)
