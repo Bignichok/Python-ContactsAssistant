@@ -97,7 +97,7 @@ class Handler:
         return message
 
     @handle_error
-    def update_contact(self, args):
+    def update_phone(self, args):
         """
         Change the phone number of an existing contact.
 
@@ -466,17 +466,17 @@ class Handler:
         """Return fuction list"""
         return {
             Menu.ADD_CONTACT: self.add_contact,
-            Menu.UPDATE_CONTACT: self.update_contact,
+            Menu.UPDATE_PHONE: self.update_phone,
             Menu.DELETE_CONTACT: self.delete_contact,
-            Menu.SET_CONTACT_BIRTHDAY: self.set_contact_birthday,
-            Menu.GET_CONTACT_BIRTHDAY: self.get_contact_birthday,
-            Menu.GET_CONTACT_BY_NAME: self.get_contact_by_name,
-            Menu.GET_CONTACT_BY_PHONE: self.get_contact_by_phone,
-            Menu.GET_CONTACT_BY_EMAIL: self.get_contact_by_email,
-            Menu.GET_UPCOMING_BIRTHDAYS: self.get_upcoming_birthdays,
-            Menu.UPDATE_CONTACT_EMAIL: self.update_contact_email,
+            Menu.SET_BIRTHDAY: self.set_contact_birthday,
+            Menu.SHOW_BIRTHDAY: self.get_contact_birthday,
+            Menu.FIND_CONTACT_BY_NAME: self.get_contact_by_name,
+            Menu.FIND_CONTACT_BY_PHONE: self.get_contact_by_phone,
+            Menu.FIND_CONTACT_BY_EMAIL: self.get_contact_by_email,
+            Menu.UPCOMING_BIRTHDAYS: self.get_upcoming_birthdays,
+            Menu.UPDATE_EMAIL: self.update_contact_email,
             Menu.ADD_ADDRESS: self.add_address,
-            Menu.DELETE_ADDRESS: self.remove_address,
+            Menu.REMOVE_ADDRESS: self.remove_address,
             Menu.ADD_NOTE: self.add_note,
             Menu.FIND_NOTE: self.find_note,
             Menu.DELETE_NOTE: self.delete_note,
@@ -484,15 +484,15 @@ class Handler:
             Menu.UPDATE_NOTE: self.update_note_prompt,
             Menu.SEARCH_NOTES: self.search_notes,
             Menu.FILTER_NOTES_BY_TAG: self.filter_notes,
-            Menu.GET_NOTES_IN_DAYS: self.get_notes_in_days,
-            Menu.GET_ALL_NOTES: self.print_all_notes,
+            Menu.NOTES_DUE_IN_DAYS: self.get_notes_in_days,
+            Menu.SHOW_ALL_NOTES: self.print_all_notes,
         }
 
     def __without_params_commands(self) -> dict:
         """Return fuction list"""
         return {
-            Menu.HELLO: self.hello,
-            Menu.GET_ALL_CONTACTS: self.contact_book.__str__,
+            Menu.SHOW_COMMANDS: self.hello,
+            Menu.SHOW_ALL_CONTACTS: self.contact_book.__str__,
             Menu.EXIT: self.close,
             Menu.CLOSE: self.close,
         }
