@@ -512,7 +512,10 @@ class Handler:
         if command is None:
             return ""
 
+        if len(command.value.param_list) != 0 and args is None:
+            return ""
+
         if command in self.__without_params_commands():
             return self.__without_params_commands().get(command)()
-        else:
-            return self.__compliance_list().get(command)(args)
+
+        return self.__compliance_list().get(command)(args)
