@@ -60,6 +60,11 @@ class Address:
         :param country: Country name. Default is None.
 
         """
+        self.street = None
+        self.city = None
+        self.postal_code = None
+        self.country = None
+
         if street:
             self.street = Street(street)
         if city:
