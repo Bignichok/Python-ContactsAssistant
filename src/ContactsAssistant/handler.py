@@ -7,8 +7,9 @@ from menu import Menu
 from utils import format_greeting
 from contactsBook import ContactsBook
 from Record import Record
-from notebook import Notebook
 from note import Note
+from notebook import Notebook
+
 
 NOT_FOUND_MESSAGE = "Contact does not exist, you can add it"
 
