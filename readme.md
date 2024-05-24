@@ -4,8 +4,8 @@ Contacts Assistant is a bot designed to help you manage your address book effici
 
 ## Initialization
   1. Initialize virtual environment
-     - .\.venv\Scripts\activate.bat - Windows у командному рядку (CMD)
-     - .\.venv\Scripts\Activate.ps1 - Windows у PowerShell
+     - .venv\Scripts\activate.bat - Windows у командному рядку (CMD)
+     - .venv\Scripts\Activate.ps1 - Windows у PowerShell
      - source .venv/bin/activate - macOS та Linux
   2. pip install -r requirements.txt
   3. python src\ContactsAssistant\__main__.py
