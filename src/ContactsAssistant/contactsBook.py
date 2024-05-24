@@ -37,12 +37,80 @@ class ContactsBook(UserDict):
         Returns:
             str: A string with each record in the address book on a new line.
         """
-        lines = []
+        # lines = []
 
-        for _, record in self.data.items():
-            lines.append(f"{record}")
+        #  for _, record in self.data.items():
+        #    lines.append(f"{record}")
 
-        return "\n".join(lines)
+        return self.__format_book()
+
+    def __format_book(self):
+        """
+        Format a list of Record objects into a neatly aligned table.
+
+        Returns:
+            str: A formatted string representing the contact list.
+        """
+        contact_list = self.data.values()
+        # Calculate the maximum width of each column
+        name_width = max(len(str(contact.name)) for contact in contact_list)
+        phone_width = max(
+            list(
+                len(str(phone)) for contact in contact_list for phone in contact.phones
+            ),
+            default=10,
+        )
+        email_width = max(
+            list(len(str(contact.email)) for contact in contact_list if contact.email),
+            default=15,
+        )
+        birthday_width = max(
+            list(
+                len(str(contact.birthday))
+                for contact in contact_list
+                if contact.birthday
+            ),
+            default=10,
+        )
+        address_width = max(
+            list(
+                len(str(address))
+                for contact in contact_list
+                for address in contact.addresses.values()
+            ),
+            default=20,
+        )
+
+        # Header
+        header = f"{'Name':<{name_width}}  {'Phones':<{phone_width}}  {'Email':<{email_width}}  {'Birthday':<{birthday_width}}  {'Addresses':<{address_width}}"
+        header_separator = "-" * (
+            name_width + phone_width + email_width + birthday_width + address_width + 10
+        )
+
+        # Rows
+        rows = []
+        for contact in contact_list:
+            name = str(contact.name)
+            email = str(contact.email) if contact.email else ""
+            birthday = str(contact.birthday) if contact.birthday else ""
+
+            for index in range(0, max([len(contact.phones), len(contact.addresses)])):
+                phone = ""
+                address = ""
+                if len(contact.phones) > index:
+                    phone = str(contact.phones[index])
+
+                if len(contact.addresses) > index:
+                    address = f"{(list(contact.addresses.keys())[index]).value }: {contact.addresses[(list(contact.addresses.keys())[index])]}"
+
+                rows.append(
+                    f"{name:<{name_width}}  {phone:<{phone_width}}  {email:<{email_width}}  {birthday:<{birthday_width}}  {address:<{address_width}}"
+                )
+                email = ""
+                name = ""
+                birthday = ""
+
+        return header + "\n" + header_separator + "\n" + "\n".join(rows)
 
     def add_record(self, record):
         """
@@ -72,7 +140,7 @@ class ContactsBook(UserDict):
             return self.data[name]
         else:
             return None
-        
+
     def find_by_phone(self, phone: str):
         """
         Finds and returns a record by phone number.

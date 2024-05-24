@@ -11,9 +11,9 @@ class AddressType(Enum):
     Enumeration class for address types.
     """
 
-    HOME = 1
-    WORK = 2
-    OTHER = 3
+    HOME = "Home"
+    WORK = "Work"
+    OTHER = "Other"
 
 
 class City(Field):

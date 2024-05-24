@@ -34,7 +34,7 @@ class Record:
         self.name = Name(name)
         self.phones = []
         self.birthday = None
-        self.email = ""
+        self.email = None
         self.addresses = {}
 
     def __str__(self):
@@ -44,14 +44,18 @@ class Record:
         Returns:
             str: A string containing the name, phone numbers, and birthday of the contact.
         """
-        result = f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}, email: {self.email}"
+        result = f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
+
+        if self.email:
+            result += f", email: {self.email}"
+
         if self.birthday:
             result += f", birthday: {self.birthday}"
 
         if self.addresses:
             result += ", addresses: "
             for addr_type, address in self.addresses.items():
-                result += f"{addr_type.name}: {address}, "
+                result += f"{addr_type.value}: {address}, "
             result = result[:-2]  # Remove trailing comma and space
         return result
 

@@ -1,27 +1,56 @@
 """Main App"""
 
+import shlex
+import argparse
 from constants import INPUT_STYLE
 from handler import Handler
 from menu import Menu
 from prompt_toolkit import prompt
 from prompt_toolkit.styles import Style
+from prompt_toolkit.history import InMemoryHistory
 
 handler = Handler()
 
 
-def parse_input(user_input):
+def handle_user_input(user_input, parser):
     """
-    Parse user input into a command and its arguments.
+    Process the user input.
 
     Args:
         user_input (str): The input string from the user.
+        parser (argparse.ArgumentParser): The argument parser.
 
     Returns:
         tuple: The command and a list of arguments.
     """
-    cmd, *args = user_input.split()
-    cmd = Menu.get_by_name(cmd)
-    return cmd, *args
+    user_command, *args = user_input.split(maxsplit=1)
+    command = Menu.get_by_name(user_command)
+    if command:
+        if command in (Menu.EXIT, Menu.CLOSE):
+            return command, None
+
+        args = None
+        try:
+            args = parser.parse_args(shlex.split(user_input))
+        except (
+            argparse.ArgumentError,
+            argparse.ArgumentTypeError,
+            ValueError,
+            SystemExit,
+        ) as error:
+            print(error)
+
+        return command, args
+    else:
+        print("Invalid command.")
+        suggestions = Menu.suggest_similar_commands(user_command)
+        if suggestions:
+            print(
+                f"Command '{user_command}' not found. Did you mean: {', '.join(suggestions)}?"
+            )
+        else:
+            print(f"Command '{user_command}' not found.")
+        return None, None
 
 
 def main():
@@ -31,17 +60,25 @@ def main():
     Continuously prompts the user for commands and executes the appropriate function.
     """
     print(handler.greeting())
+    parser = Menu.create_parser()
+    history = InMemoryHistory()
+
     while True:
         style = Style.from_dict(INPUT_STYLE)
+
         user_input = prompt(
-            "Enter a command >>> ", completer=handler.completer, style=style
+            "Enter a command >>> ",
+            completer=handler.completer,
+            style=style,
+            history=history,
         )
-        command, *args = parse_input(user_input)
-        print(handler.execute(command, args))
-        print()
-        if command in (Menu.EXIT, Menu.CLOSE):
-            break
-        print()
+
+        command, args = handle_user_input(user_input, parser)
+        if command:
+            print(handler.execute(command, args))
+            print()
+            if command in (Menu.EXIT, Menu.CLOSE):
+                break
 
 
 if __name__ == "__main__":
