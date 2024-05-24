@@ -18,113 +18,154 @@ Parametr = namedtuple(
 class Menu(Enum):
     """Class"""
 
-    HELLO = Command(0, [], "to show command list")
+    SHOW_COMMANDS = Command(0, [], "Show the list of available commands")
+
     ADD_CONTACT = Command(
         2,
         [
-            Parametr("name", True, "contact name"),
-            Parametr("phone", True, "contact phone number in format XXXXXXXXXX"),
-            Parametr("email", False, "contact email address"),
-            Parametr("birthday", False, "contact birthday"),
+            Parametr("name", True, "Name of the contact"),
+            Parametr("phone", True, "Phone number of the contact (format: XXXXXXXXXX)"),
+            Parametr("email", False, "Email address of the contact"),
+            Parametr("birthday", False, "Birthday of the contact"),
         ],
-        "to add a new contact",
-    )
-    UPDATE_CONTACT = Command(
-        3,
-        [
-            Parametr("name", True, "contact name"),
-            Parametr("oldphone", True, "old phone number"),
-            Parametr("newphone", True, "new phone number in format XXXXXXXXXX"),
-        ],
-        "to update a phone",
-    )
-    DELETE_CONTACT = Command(
-        1, [Parametr("name", True, "contact name")], "to delete contact"
-    )
-    SET_CONTACT_BIRTHDAY = Command(
-        2,
-        [
-            Parametr("name", True, "contact name"),
-            Parametr("birthday", True, "contact birthday"),
-        ],
-        "to set birthday",
+        "Add a new contact or update an existing contact",
     )
 
-    GET_CONTACT_BIRTHDAY = Command(
-        1, [Parametr("name", True, "contact name")], "to show birthday"
+    UPDATE_PHONE = Command(
+        3,
+        [
+            Parametr("name", True, "Name of the contact"),
+            Parametr("oldphone", True, "Old phone number"),
+            Parametr("newphone", True, "New phone number (format: XXXXXXXXXX)"),
+        ],
+        "Update the phone number of a contact",
     )
-    GET_CONTACT_BY_NAME = Command(
-        1, [Parametr("name", True, "contact name")], "to find a contact by name"
+
+    DELETE_CONTACT = Command(
+        1, [Parametr("name", True, "Name of the contact")], "Delete a contact"
     )
-    GET_CONTACT_BY_PHONE = Command(
+
+    SET_BIRTHDAY = Command(
+        2,
+        [
+            Parametr("name", True, "Name of the contact"),
+            Parametr("birthday", True, "Birthday of the contact"),
+        ],
+        "Set the birthday of a contact",
+    )
+
+    SHOW_BIRTHDAY = Command(
         1,
-        [Parametr("phone", True, "phone number")],
-        'text": "to find a contact by phone',
+        [Parametr("name", True, "Name of the contact")],
+        "Show the birthday of a contact",
     )
-    GET_CONTACT_BY_EMAIL = Command(
+
+    FIND_CONTACT_BY_NAME = Command(
+        1, [Parametr("name", True, "Name of the contact")], "Find a contact by name"
+    )
+
+    FIND_CONTACT_BY_PHONE = Command(
         1,
-        [Parametr("email", True, "email address")],
-        'text": "to find a contact by email',
+        [Parametr("phone", True, "Phone number of the contact")],
+        "Find a contact by phone number",
     )
-    GET_ALL_CONTACTS = Command(0, [], "to view a full contact list")
-    GET_UPCOMING_BIRTHDAYS = Command(
+
+    FIND_CONTACT_BY_EMAIL = Command(
+        1,
+        [Parametr("email", True, "Email address of the contact")],
+        "Find a contact by email address",
+    )
+
+    SHOW_ALL_CONTACTS = Command(0, [], "Show all contacts")
+
+    UPCOMING_BIRTHDAYS = Command(
         0,
         [
             Parametr(
-                "days", False, "The number of days to look ahead for upcoming birthdays"
+                "days", False, "Number of days to look ahead for upcoming birthdays"
             )
         ],
-        "Get a list of upcoming birthdays within the specified number of days.",
+        "Show upcoming birthdays within the specified number of days",
     )
-    UPDATE_CONTACT_EMAIL = Command(
+
+    UPDATE_EMAIL = Command(
         2,
         [
-            Parametr("name", True, "contact name"),
-            Parametr("email", True, "email address"),
+            Parametr("name", True, "Name of the contact"),
+            Parametr("email", True, "New email address of the contact"),
         ],
-        "to update email",
+        "Update the email address of a contact",
     )
+
     ADD_ADDRESS = Command(
         2,
         [
-            Parametr("name", True, "contact name"),
+            Parametr("name", True, "Name of the contact"),
             Parametr(
                 "addresstype",
                 False,
-                "address type (Home,Work,Other)",
+                "Type of address (Home, Work, Other)",
                 ["Home", "Work", "Other"],
             ),
-            Parametr("street", False, "street"),
-            Parametr("city", False, "street"),
-            Parametr("postalcode", False, "street"),
-            Parametr("country", False, "street"),
+            Parametr("street", False, "Street address"),
+            Parametr("city", False, "City"),
+            Parametr("postalcode", False, "Postal code"),
+            Parametr("country", False, "Country"),
         ],
-        "add or edit contact address",
+        "Add or update the address of a contact",
     )
-    DELETE_ADDRESS = Command(
+
+    REMOVE_ADDRESS = Command(
         2,
         [
-            Parametr("name", True, "contact name"),
+            Parametr("name", True, "Name of the contact"),
             Parametr(
                 "addresstype",
                 False,
-                "address type (Home,Work,Other)",
+                "Type of address (Home, Work, Other)",
                 ["Home", "Work", "Other"],
             ),
         ],
-        "remove the contact address",
+        "Remove the address of a contact",
     )
-    ADD_NOTE = Command(0, [], "to add note")
-    FIND_NOTE = Command(1, [Parametr("title", True, "note title")], "to find note by title")
-    DELETE_NOTE = Command(1, [Parametr("title", True, "note title")], "to delete note")
-    DELETE_ALL_NOTES = Command(0, [], "to delete all notes")
-    UPDATE_NOTE = Command(1, [Parametr("title", True, "note title")], "to update note by title")
-    SEARCH_NOTES = Command(1, [Parametr("query", True, "search query")], "Search for notes containing the query in their title or content.")
-    FILTER_NOTES_BY_TAG = Command(1, [Parametr("tag", True, "tag to filer")], "Filter notes by tag.")
-    GET_NOTES_IN_DAYS = Command(1, [Parametr("days", True, "note subject")], "Get notes that are due in the next specified number of days.",)
-    GET_ALL_NOTES = Command(0, [], "to view a full notes list")
-    EXIT = Command(0, [], "to app close")
-    CLOSE = Command(0, [], "to close application")
+
+    ADD_NOTE = Command(0, [], "Add a new note")
+
+    FIND_NOTE = Command(
+        1, [Parametr("title", True, "Title of the note")], "Find a note by title"
+    )
+
+    DELETE_NOTE = Command(
+        1, [Parametr("title", True, "Title of the note")], "Delete a note"
+    )
+
+    DELETE_ALL_NOTES = Command(0, [], "Delete all notes")
+
+    UPDATE_NOTE = Command(
+        1, [Parametr("title", True, "Title of the note")], "Update a note by title"
+    )
+
+    SEARCH_NOTES = Command(
+        1,
+        [Parametr("query", True, "Search query")],
+        "Search for notes containing the query in their title or content",
+    )
+
+    FILTER_NOTES_BY_TAG = Command(
+        1, [Parametr("tag", True, "Tag to filter notes by")], "Filter notes by tag"
+    )
+
+    NOTES_DUE_IN_DAYS = Command(
+        1,
+        [Parametr("days", True, "Number of days to look ahead for due notes")],
+        "Show notes that are due within the next specified number of days",
+    )
+
+    SHOW_ALL_NOTES = Command(0, [], "Show all notes")
+
+    EXIT = Command(0, [], "Exit the application")
+
+    CLOSE = Command(0, [], "Close the application")
 
     @classmethod
     def pretty_print(cls):
