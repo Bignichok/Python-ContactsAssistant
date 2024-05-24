@@ -202,7 +202,8 @@ class Handler:
         Returns:
             str: Message indicating whether the contact e-mail was updated.
         """
-        name, email = args
+        name = args.name
+        email = args.email
         record = self.contact_book.find_by_name(name)
         if record is None:
             return NOT_FOUND_MESSAGE
@@ -269,35 +270,41 @@ class Handler:
         return "Address not found."
 
     @handle_error
-    def get_contact(self, args):
+    def get_contact(self, args, search_by: str):
         """
         Show the phone number of a contact.
 
         Args:
-            args (Namespace): Namespace containing the name of the contact.
+            args (Namespace): Namespace containing the (name, phone, or email) of the contact.
+            search_by (str): The type of search ('name', 'phone', 'email')
 
         Returns:
             str or Record: The contact's record or a message indicating the contact was not found.
         """
-        if len(args) < 1:
-            return "Provide contact name please"
-        name = args[0]
-        record = self.contact_book.find_by_name(name)
+        if search_by == 'name':
+            record = self.contact_book.find_by_name(args.name)
+        elif search_by == 'phone':
+            record = self.contact_book.find_by_phone(args.phone)
+        elif search_by == 'email':
+            record = self.contact_book.find_by_email(args.email)
+        else:
+            return "Invalid search type specified"
+            
         if record is None:
             return NOT_FOUND_MESSAGE
         return record
 
     @handle_error
-    def get_contact_by_name(self, args, book: ContactsBook):
-        return self.contact_book.get_contact(args, book, "name")
+    def get_contact_by_name(self, args):
+        return self.get_contact(args, "name")
 
     @handle_error
-    def get_contact_by_phone(self, args, book: ContactsBook):
-        return self.contact_book.get_contact(args, book, "phone")
+    def get_contact_by_phone(self, args):
+        return self.get_contact(args,  "phone")
 
     @handle_error
-    def get_contact_by_email(self, args, book: ContactsBook):
-        return self.contact_book.get_contact(args, book, "email")
+    def get_contact_by_email(self, args):
+        return self.get_contact(args, "email")
 
     def close(self) -> str:
         """return bye message"""
@@ -312,10 +319,12 @@ class Handler:
             Menu.DELETE_CONTACT: self.delete_contact,
             Menu.SET_CONTACT_BIRTHDAY: self.set_contact_birthday,
             Menu.GET_CONTACT_BIRTHDAY: self.get_contact_birthday,
-            Menu.GET_CONTACT_BY_NAME: self.get_contact,
+            Menu.GET_CONTACT_BY_NAME: self.get_contact_by_name,
+            Menu.GET_CONTACT_BY_PHONE: self.get_contact_by_phone,
+            Menu.GET_CONTACT_BY_EMAIL: self.get_contact_by_email,
             Menu.GET_UPCOMING_BIRTHDAYS: self.get_upcoming_birthdays,
             Menu.UPDATE_CONTACT_EMAIL: self.update_contact_email,
-            Menu.ADDRESS: self.add_address,
+            Menu.ADD_ADDRESS: self.add_address,
             Menu.DELETE_ADDRESS: self.remove_address,
             Menu.NOTE_ADD: None,
             Menu.NOTE_DEL: None,

@@ -76,10 +76,8 @@ def main():
         command, args = handle_user_input(user_input, parser)
         if command:
             print(handler.execute(command, args))
-            print()
             if command in (Menu.EXIT, Menu.CLOSE):
                 break
-
 
 if __name__ == "__main__":
     main()
