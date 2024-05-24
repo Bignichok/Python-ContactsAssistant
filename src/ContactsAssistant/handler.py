@@ -1,7 +1,7 @@
 """Handler module"""
 
 from address import AddressType
-from commandcompleter import CommandCompleter
+from command_completer import CommandCompleter
 from constants import GREETING_BANNER
 from menu import Menu
 from utils import format_greeting
@@ -105,13 +105,13 @@ class Handler:
             str: Message indicating whether the phone number was changed or if the contact was not found.
         """
         name = args.name
-        oldphone = args.oldphone
-        newphone = args.newphone
+        old_phone = args.oldphone
+        new_phone = args.newphone
 
         record = self.contact_book.find_by_name(name)
         if record is None:
             return NOT_FOUND_MESSAGE
-        record.edit_phone(oldphone, newphone)
+        record.edit_phone(old_phone, new_phone)
         return "Phone changed"
 
     @handle_error
@@ -223,9 +223,9 @@ class Handler:
             str: Message indicating whether the contact was added or updated.
         """
         name = args.name
-        addresstype = args.addresstype
+        address_type = args.addresstype
 
-        addresstype = AddressType(addresstype)
+        address_type = AddressType(address_type)
 
         street = args.street
         city = args.city
@@ -234,11 +234,11 @@ class Handler:
         record = self.contact_book.find_by_name(name)
         if record is None:
             return NOT_FOUND_MESSAGE
-        if addresstype in record.addresses:
-            record.edit_address(addresstype, street, city, postalcode, country)
+        if address_type in record.addresses:
+            record.edit_address(address_type, street, city, postalcode, country)
             return "Address updated."
         else:
-            record.add_address(addresstype, street, city, postalcode, country)
+            record.add_address(address_type, street, city, postalcode, country)
 
         return "Address added."
 
@@ -255,15 +255,15 @@ class Handler:
             str: Message indicating whether the address deleted.
         """
         name = args.name
-        addresstype = args.addresstype
+        address_type = args.addresstype
 
-        addresstype = AddressType(addresstype)
+        address_type = AddressType(address_type)
 
         record = self.contact_book.find_by_name(name)
         if record is None:
             return NOT_FOUND_MESSAGE
-        if addresstype in record.addresses:
-            record.remove_address(addresstype)
+        if address_type in record.addresses:
+            record.remove_address(address_type)
             return "Address removed."
 
         return "Address not found."

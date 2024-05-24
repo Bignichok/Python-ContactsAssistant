@@ -23,7 +23,7 @@ class Menu(Enum):
         2,
         [
             Parametr("name", True, "contact name"),
-            Parametr("phone", False, "contact phone number in format XXXXXXXXXX"),
+            Parametr("phone", True, "contact phone number in format XXXXXXXXXX"),
             Parametr("email", False, "contact email address"),
             Parametr("birthday", False, "contact birthday"),
         ],
