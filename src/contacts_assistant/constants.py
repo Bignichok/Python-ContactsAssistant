@@ -1,5 +1,5 @@
 DATE_FORMAT = "%d.%m.%Y"
-CONTACTS_BOOK_FILENAME = "./contactsbook.pkl"
+CONTACTS_BOOK_FILENAME = "./contacts_book.pkl"
 NOTEBOOK_FILENAME = "./notebook.json"
 MENU_BORDER = f"{'-'*72}\n"
 DEMO_CONTACTS = 10

@@ -21,7 +21,7 @@ with open("requirements.txt", "r", encoding=encoding) as fh:
 
 setuptools.setup(
     name="contacts_assistant",
-    version="0.0.5",
+    version="0.0.13",
     package_dir={'': 'src'},
     packages=setuptools.find_packages(where='src'),
     include_package_data=True,
@@ -40,7 +40,7 @@ setuptools.setup(
     python_requires='>=3.8',
     entry_points={
         'console_scripts': [
-            'contacts-assistant=main:main'
+            'contacts_assistant=main:main'
         ]
     },
 )

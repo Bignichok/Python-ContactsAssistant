@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 
-from src.constants import DATE_FORMAT
+from contacts_assistant.constants import DATE_FORMAT
 
 class Note:
     def __init__(self, title, content, tags=None, due_date=None):

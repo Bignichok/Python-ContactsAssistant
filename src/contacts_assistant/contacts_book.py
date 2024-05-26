@@ -2,7 +2,7 @@ from datetime import date
 from collections import UserDict
 import pickle
 
-from src.date_helpers import DateHelper
+from contacts_assistant.date_helpers import DateHelper
 
 
 def is_weekend_day(day: int) -> bool:

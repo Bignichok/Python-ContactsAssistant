@@ -6,9 +6,9 @@ from prompt_toolkit import prompt
 from prompt_toolkit.styles import Style
 from prompt_toolkit.history import InMemoryHistory
 
-from src.constants import INPUT_STYLE
-from src.handler import Handler
-from src.menu import Menu
+from contacts_assistant.constants import INPUT_STYLE
+from contacts_assistant.handler import Handler
+from contacts_assistant.menu import Menu
 
 handler = Handler()
 

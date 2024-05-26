@@ -5,8 +5,8 @@ import argparse
 from enum import Enum
 from collections import namedtuple
 
-from src.constants import MENU_BORDER
-from src.utils import format_cmd, format_param
+from contacts_assistant.constants import MENU_BORDER
+from contacts_assistant.utils import format_cmd, format_param
 
 Command = namedtuple("Command", ["min_required_params", "param_list", "hint"])
 Parametr = namedtuple(

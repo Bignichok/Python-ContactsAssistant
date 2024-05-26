@@ -6,7 +6,7 @@ including formatting workdays and calculating the next birthday.
 from datetime import date as dt_date
 from datetime import timedelta
 
-from src.constants import DATE_FORMAT
+from contacts_assistant.constants import DATE_FORMAT
 
 
 class DateHelper:
