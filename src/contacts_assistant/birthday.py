@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from Field import Field
-from constants import DATE_FORMAT
+from contacts_assistant.field import Field
+from contacts_assistant.constants import DATE_FORMAT
 
 class Birthday(Field):
     """

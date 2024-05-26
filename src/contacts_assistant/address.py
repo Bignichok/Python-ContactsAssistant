@@ -3,7 +3,7 @@ Module containing classes to represent addresses and related enums.
 """
 
 from enum import Enum
-from Field import Field
+from contacts_assistant.field import Field
 
 
 class AddressType(Enum):

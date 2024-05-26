@@ -1,7 +1,6 @@
 import re
 
-from Field import Field
-
+from contacts_assistant.field import Field
 
 class Email(Field):
     """

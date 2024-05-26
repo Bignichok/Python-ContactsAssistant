@@ -1,8 +1,7 @@
 import json
 from datetime import datetime
 from textwrap import fill
-from constants import DATE_FORMAT, MAX_SIMBOLS_IN_ROW
-
+from contacts_assistant.constants import DATE_FORMAT, MAX_SIMBOLS_IN_ROW
 
 class Note:
     def __init__(self, title, content, tags=None, due_date=None):
