@@ -1,6 +1,5 @@
 from prompt_toolkit.completion import Completer, Completion
 
-
 class CommandCompleter(Completer):
     def __init__(self, command_args, book):
         super().__init__()
