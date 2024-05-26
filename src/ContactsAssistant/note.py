@@ -1,6 +1,8 @@
 import json
 from datetime import datetime
-from constants import DATE_FORMAT
+from textwrap import fill
+from constants import DATE_FORMAT, MAX_SIMBOLS_IN_ROW
+
 
 class Note:
     def __init__(self, title, content, tags=None, due_date=None):
@@ -52,7 +54,7 @@ class Note:
             "content": self.content,
             "tags": self.tags,
             "due_date": self.due_date.strftime(DATE_FORMAT) if self.due_date else None,
-            "created_at": self.created_at.strftime(DATE_FORMAT)
+            "created_at": self.created_at.strftime(DATE_FORMAT),
         }
 
     @staticmethod
@@ -70,9 +72,11 @@ class Note:
             title=data["title"],
             content=data["content"],
             tags=data.get("tags", []),
-            due_date=data.get("due_date")
+            due_date=data.get("due_date"),
         )
-        note.created_at = datetime.strptime(data.get("created_at", datetime.now().strftime(DATE_FORMAT)), DATE_FORMAT)
+        note.created_at = datetime.strptime(
+            data.get("created_at", datetime.now().strftime(DATE_FORMAT)), DATE_FORMAT
+        )
         return note
 
     @staticmethod
@@ -96,6 +100,21 @@ class Note:
         Returns:
             str: String representation of the Note instance.
         """
-        due_date_str = self.due_date.strftime(DATE_FORMAT) if self.due_date else "Not specified"
-        return (f"Title: {self.title}\nContent: {self.content}\nTags: {', '.join(self.tags)}"
-                f"\nDue Date: {due_date_str}\nCreated At: {self.created_at.strftime(DATE_FORMAT)}")
+        due_date_str = (
+            self.due_date.strftime(DATE_FORMAT) if self.due_date else "Not specified"
+        )
+        title = fill(self.title, MAX_SIMBOLS_IN_ROW)
+        content = fill(self.content, MAX_SIMBOLS_IN_ROW) + " \n" * 2
+        tag = f"Tags:       {', '.join(self.tags)}\n"
+        due_date = f"Due Date:   {due_date_str}\n"
+        created_at = f"Created At: {self.created_at.strftime(DATE_FORMAT)}"
+        return (
+            title
+            + "\n"
+            + "═" * MAX_SIMBOLS_IN_ROW
+            + "\n"
+            + content
+            + tag
+            + due_date
+            + created_at
+        )

@@ -1,7 +1,7 @@
 DATE_FORMAT = "%d.%m.%Y"
 CONTACTS_BOOK_FILENAME = "./contactsbook.pkl"
 NOTEBOOK_FILENAME = "./notebook.json"
-MENU_BORDER = f"{'-'*72}\n"
+MENU_BORDER = f"{'-'*116}\n"
 DEMO_CONTACTS = 10
 GREETING_BANNER = """
   ___          _     _              _     _           _   
@@ -19,3 +19,4 @@ INPUT_STYLE = {
     "prompt": "#47C959",
     "prompt.arg.text": "#00aaaa",
 }
+MAX_SIMBOLS_IN_ROW = 80
