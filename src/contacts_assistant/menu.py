@@ -1,4 +1,13 @@
-"""Class Menu module"""
+"""
+This module defines the Menu class and related structures for managing commands in a assistant bot application.
+
+Classes:
+    Menu: An enumeration representing various commands and their parameters in the contacts assistant application.
+
+Constants:
+    Command: A namedtuple representing a command, its minimum required parameters, parameter list, and hint.
+    Parametr: A namedtuple representing a parameter, including its name, whether it's required, hint, and choices (if applicable).
+"""
 
 import difflib
 import argparse
@@ -17,7 +26,36 @@ Parametr = namedtuple(
 
 
 class Menu(Enum):
-    """Class"""
+    """
+    Enum representing various commands and their parameters in the contacts assistant application.
+
+    Attributes:
+        SHOW_COMMANDS: Show the list of available commands.
+        ADD_CONTACT: Add a new contact or update an existing contact.
+        UPDATE_PHONE: Update the phone number of a contact.
+        DELETE_CONTACT: Delete a contact.
+        SET_BIRTHDAY: Set the birthday of a contact.
+        SHOW_BIRTHDAY: Show the birthday of a contact.
+        FIND_CONTACT_BY_NAME: Find a contact by name.
+        FIND_CONTACT_BY_PHONE: Find a contact by phone number.
+        FIND_CONTACT_BY_EMAIL: Find a contact by email address.
+        SHOW_ALL_CONTACTS: Show all contacts.
+        UPCOMING_BIRTHDAYS: Show upcoming birthdays within the specified number of days.
+        UPDATE_EMAIL: Update the email address of a contact.
+        ADD_ADDRESS: Add or update the address of a contact.
+        REMOVE_ADDRESS: Remove the address of a contact.
+        ADD_NOTE: Add a new note.
+        FIND_NOTE: Find a note by title.
+        DELETE_NOTE: Delete a note.
+        DELETE_ALL_NOTES: Delete all notes.
+        UPDATE_NOTE: Update a note by title.
+        SEARCH_NOTES: Search for notes containing the query in their title or content.
+        FILTER_NOTES_BY_TAG: Filter notes by tag.
+        NOTES_DUE_IN_DAYS: Show notes that are due within the next specified number of days.
+        SHOW_ALL_NOTES: Show all notes.
+        EXIT: Exit the application.
+        CLOSE: Close the application.
+    """
 
     SHOW_COMMANDS = Command(0, [], "Show the list of available commands")
 
@@ -224,6 +262,15 @@ class Menu(Enum):
 
     @classmethod
     def create_parser(cls):
+        """
+        Create an ArgumentParser instance for parsing command-line arguments.
+
+        This method dynamically generates argument parsers for each command defined in the Menu class,
+        with appropriate help messages based on command hints and parameter details.
+
+        Returns:
+            argparse.ArgumentParser: An ArgumentParser instance configured with subparsers for each command.
+        """
         parser = argparse.ArgumentParser(
             description="Assistant bot", exit_on_error=False
         )

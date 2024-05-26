@@ -1,6 +1,14 @@
+"""
+A module containing the Email class for representing and validating email addresses.
+
+Classes:
+    Email: A class to represent and validate an email address.
+"""
+
 import re
 
 from contacts_assistant.field import Field
+
 
 class Email(Field):
     """

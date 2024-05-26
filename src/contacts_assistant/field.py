@@ -1,3 +1,11 @@
+"""
+A module containing the Field class, a base class to represent a generic field.
+
+Classes:
+    Field: A base class to represent a generic field.
+"""
+
+
 class Field:
     """
     A base class to represent a generic field.
@@ -11,6 +19,7 @@ class Field:
         __init__(value): Initializes the Field with a value.
         __str__(): Returns a string representation of the field.
     """
+
     def __init__(self, value):
         """
         Initializes the Field instance with the given value.
