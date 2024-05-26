@@ -2,12 +2,13 @@
 
 import shlex
 import argparse
-from constants import INPUT_STYLE
-from handler import Handler
-from menu import Menu
 from prompt_toolkit import prompt
 from prompt_toolkit.styles import Style
 from prompt_toolkit.history import InMemoryHistory
+
+from src.constants import INPUT_STYLE
+from src.handler import Handler
+from src.menu import Menu
 
 handler = Handler()
 

@@ -1,6 +1,7 @@
 import json
 from datetime import datetime, timedelta
-from note import Note
+
+from src.note import Note
 
 class Notebook:
     def __init__(self):

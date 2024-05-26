@@ -1,14 +1,14 @@
 """Handler module"""
 
-from address import AddressType
-from command_completer import CommandCompleter
-from constants import GREETING_BANNER, CONTACTS_BOOK_FILENAME, NOTEBOOK_FILENAME
-from menu import Menu
-from utils import format_greeting
-from contactsBook import ContactsBook
-from Record import Record
-from notebook import Notebook
-from note import Note
+from src.address import AddressType
+from src.command_completer import CommandCompleter
+from src.constants import GREETING_BANNER, CONTACTS_BOOK_FILENAME, NOTEBOOK_FILENAME
+from src.menu import Menu
+from src.utils import format_greeting
+from src.contacts_book import ContactsBook
+from src.record import Record
+from src.notebook import Notebook
+from src.note import Note
 
 NOT_FOUND_MESSAGE = "Contact does not exist, you can add it"
 

@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
-from constants import DATE_FORMAT
+
+from src.constants import DATE_FORMAT
 
 class Note:
     def __init__(self, title, content, tags=None, due_date=None):

@@ -1,7 +1,6 @@
 import re
 
-from Field import Field
-
+from src.field import Field
 
 class Email(Field):
     """
