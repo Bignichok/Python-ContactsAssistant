@@ -1,4 +1,4 @@
-from Field import Field
+from contacts_assistant.field import Field
 
 class Name(Field):
     """

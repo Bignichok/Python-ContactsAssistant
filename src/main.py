@@ -2,12 +2,13 @@
 
 import shlex
 import argparse
-from constants import INPUT_STYLE
-from handler import Handler
-from menu import Menu
 from prompt_toolkit import prompt
 from prompt_toolkit.styles import Style
 from prompt_toolkit.history import InMemoryHistory
+
+from contacts_assistant.constants import INPUT_STYLE
+from contacts_assistant.handler import Handler
+from contacts_assistant.menu import Menu
 
 handler = Handler()
 
@@ -78,6 +79,7 @@ def main():
             print(handler.execute(command, args))
             if command in (Menu.EXIT, Menu.CLOSE):
                 break
+
 
 if __name__ == "__main__":
     main()

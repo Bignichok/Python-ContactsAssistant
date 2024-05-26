@@ -1,10 +1,18 @@
+"""
+    Test cases for the Handler class.
+"""
+
 from datetime import date, timedelta
 import random
 import unittest
+import sys
+import os
 from argparse import Namespace
-from handler import Handler
-from menu import Menu
-from constants import DATE_FORMAT
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from contacts_assistant.handler import Handler
+from contacts_assistant.menu import Menu
+from contacts_assistant.constants import DATE_FORMAT
 
 
 class TestHandler(unittest.TestCase):

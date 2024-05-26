@@ -1,8 +1,8 @@
-from Phone import Phone
-from Name import Name
-from Birthday import Birthday
-from Email import Email
-from address import Address, AddressType
+from contacts_assistant.phone import Phone
+from contacts_assistant.name import Name
+from contacts_assistant.birthday import Birthday
+from contacts_assistant.contact_email import Email
+from contacts_assistant.address import Address, AddressType
 
 
 class Record:
