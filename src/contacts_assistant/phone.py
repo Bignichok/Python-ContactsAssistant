@@ -1,4 +1,15 @@
+"""
+A module containing the Phone class for representing and validating phone numbers.
+
+This module provides the Phone class, which inherits from Field to provide a consistent interface for different types of fields. 
+The Phone class is responsible for validating and representing phone numbers.
+
+Classes:
+    Phone: A class to represent and validate a phone number.
+"""
+
 from contacts_assistant.field import Field
+
 
 class Phone(Field):
     """
@@ -13,6 +24,7 @@ class Phone(Field):
         __init__(number): Initializes the Phone with a given phone number.
         validate_number(number): Validates the phone number format.
     """
+
     def __init__(self, number):
         """
         Initializes the Phone instance with the given phone number.
@@ -42,8 +54,8 @@ class Phone(Field):
         """
         if len(number) != 10:
             raise ValueError("Telephone number should have 10 numbers")
-        
+
         if not number.isdigit():
             raise ValueError("Telephone number should have only numbers")
-        
+
         return number

@@ -1,4 +1,14 @@
+"""
+A module containing the Name class for representing and validating names.
+
+The Name class is responsible for representing names.
+
+Classes:
+    Name: A class to represent and validate a name.
+"""
+
 from contacts_assistant.field import Field
+
 
 class Name(Field):
     """
@@ -12,6 +22,7 @@ class Name(Field):
     Methods:
         __init__(name): Initializes the Name with a given name string.
     """
+
     def __init__(self, name):
         """
         Initializes the Name instance with the given name string.

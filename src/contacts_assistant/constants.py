@@ -1,8 +1,19 @@
+"""
+A module containing configuration settings for a application.
+
+Constants:
+    DATE_FORMAT (str): The format string for dates.
+    CONTACTS_BOOK_FILENAME (str): The filename for the contacts book file.
+    NOTEBOOK_FILENAME (str): The filename for the notebook file.
+    MENU_BORDER (str): The border style for the menu.
+    GREETING_BANNER (str): The text displayed as a greeting.
+    INPUT_STYLE (dict): The style settings for input prompts.
+"""
+
 DATE_FORMAT = "%d.%m.%Y"
 CONTACTS_BOOK_FILENAME = "./contacts_book.pkl"
 NOTEBOOK_FILENAME = "./notebook.json"
 MENU_BORDER = f"{'-'*116}\n"
-DEMO_CONTACTS = 10
 GREETING_BANNER = """
   ___          _     _              _     _           _   
  / _ \        (_)   | |            | |   | |         | |  

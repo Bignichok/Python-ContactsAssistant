@@ -1,21 +1,15 @@
+"""
+This module provides classes and functions for managing contacts.
+
+Classes:
+    ContactsBook: A class for managing a collection of contacts.
+"""
+
 from datetime import date
 from collections import UserDict
 import pickle
 
 from contacts_assistant.date_helpers import DateHelper
-
-
-def is_weekend_day(day: int) -> bool:
-    """
-    Checks if a given day is a weekend.
-
-    Args:
-        day (int): The day of the week as an integer, where Monday is 0 and Sunday is 6.
-
-    Returns:
-        bool: True if the day is a weekend (Saturday or Sunday), False otherwise.
-    """
-    return day > 4
 
 
 class ContactsBook(UserDict):
@@ -213,7 +207,7 @@ class ContactsBook(UserDict):
                 )
 
         return upcoming_birthdays
-    
+
     def save_to_file(self, filepath):
         """
         Saves the address book data to a file using pickle.
@@ -252,4 +246,3 @@ class ContactsBook(UserDict):
             return ContactsBook()
         except Exception as e:
             raise Exception(f"Error loading data: {e}")
-

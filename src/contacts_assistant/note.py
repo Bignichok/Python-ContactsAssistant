@@ -1,9 +1,38 @@
+"""
+A module containing the Note class for managing notes.
+
+This module provides the Note class, which represents a note with a title, content, tags, and optional due date.
+
+Classes:
+    Note: A class to represent a note.
+"""
+
 import json
 from datetime import datetime
 from textwrap import fill
 from contacts_assistant.constants import DATE_FORMAT, MAX_SIMBOLS_IN_ROW
 
+
 class Note:
+    """
+    A class to represent a note.
+
+    Attributes:
+        title (str): The title of the note.
+        content (str): The content of the note.
+        tags (list): List of tags associated with the note.
+        due_date (datetime): Due date of the note.
+        created_at (datetime): Date when the note was created.
+
+    Methods:
+        __init__(title, content, tags=None, due_date=None): Initializes a Note instance.
+        _validate_date(date_str): Validates the date format.
+        to_dict(): Converts the Note instance to a dictionary.
+        from_dict(data): Creates a Note instance from a dictionary.
+        from_json(json_obj): Creates a Note instance from a JSON object.
+        __str__(): Gets the string representation of the Note instance.
+    """
+
     def __init__(self, title, content, tags=None, due_date=None):
         """
         Initialize a Note instance.

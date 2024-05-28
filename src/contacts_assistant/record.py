@@ -1,3 +1,13 @@
+"""
+A module containing the Record class for representing contact records.
+
+This module provides the Record class, which represents a contact record. 
+It includes attributes and methods for managing contact information.
+
+Classes:
+    Record: A class to represent a contact record.
+"""
+
 from contacts_assistant.phone import Phone
 from contacts_assistant.name import Name
 from contacts_assistant.birthday import Birthday
