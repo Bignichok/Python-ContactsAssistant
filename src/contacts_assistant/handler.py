@@ -1,8 +1,19 @@
-"""Handler module"""
+"""
+Handler module
+
+This module contains the Handler class, which serves as the main controller for handling user commands and managing contacts and notes.
+
+Classes:
+    Handler: A class for handling user commands and managing contacts and notes.
+"""
 
 from contacts_assistant.address import AddressType
 from contacts_assistant.command_completer import CommandCompleter
-from contacts_assistant.constants import GREETING_BANNER, CONTACTS_BOOK_FILENAME, NOTEBOOK_FILENAME
+from contacts_assistant.constants import (
+    GREETING_BANNER,
+    CONTACTS_BOOK_FILENAME,
+    NOTEBOOK_FILENAME,
+)
 from contacts_assistant.menu import Menu
 from contacts_assistant.utils import format_greeting
 from contacts_assistant.contacts_book import ContactsBook
@@ -32,15 +43,45 @@ def handle_error(func):
 
 
 class Handler:
-    """Class"""
+    """
+    A class for handling user commands and managing contacts and notes.
 
-    @staticmethod
-    def strip_quotes(value):
-        if (value.startswith('"') and value.endswith('"')) or (
-            value.startswith("'") and value.endswith("'")
-        ):
-            return value[1:-1]
-        return value
+    Attributes:
+        contact_book (ContactsBook): The ContactsBook instance.
+        notebook (Notebook): The Notebook instance.
+        completer (CommandCompleter): The CommandCompleter instance for command auto-completion.
+
+    Methods:
+        strip_quotes(value): Strip quotes from a string value.
+        greeting(): Print a greeting message.
+        hello(): Print a hello message.
+        add_contact(args): Add a contact to the address book or update an existing contact.
+        update_phone(args): Change the phone number of an existing contact.
+        delete_contact(args): Remove a contact from the address book.
+        set_contact_birthday(args): Add a birthday to a contact.
+        get_contact_birthday(args): Show the birthday of a contact.
+        get_upcoming_birthdays(args): Show all birthdays this week.
+        update_contact_email(args): Update contact email.
+        add_address(args): Add or update an address of a contact.
+        remove_address(args): Remove an address from a contact.
+        get_contact(args, search_by): Get contact details by name, phone, or email.
+        get_contact_by_name(args): Get contact details by name.
+        get_contact_by_phone(args): Get contact details by phone number.
+        get_contact_by_email(args): Get contact details by email.
+        add_note(args): Add a note to the notebook.
+        find_note(args): Find and show the details of a note.
+        delete_note(args): Delete a note from the notebook.
+        delete_all_notes(args): Delete all notes from the notebook.
+        update_note_prompt(args): Update a note by title in the notebook via user prompt.
+        search_notes(args): Search for notes containing the query in their title or content.
+        filter_notes(args): Filter notes by tag.
+        get_notes_in_days(args): Get notes that are due in the next specified number of days.
+        print_all_notes(args): Print all notes in the notebook.
+        close(): Save data to files and return a goodbye message.
+        __compliance_list(): Get a dictionary of commands and their corresponding functions.
+        __without_params_commands(): Get a dictionary of commands without parameters and their corresponding functions.
+        execute(command, args): Execute the function corresponding to the command.
+    """
 
     def __init__(self) -> None:
         self.contact_book = ContactsBook.load_from_file(CONTACTS_BOOK_FILENAME)
@@ -191,9 +232,9 @@ class Handler:
         """
         days = args.days
         if days:
-            return self.contact_book.get_upcoming_birthdays(int(days)).__str__()
+            return str(self.contact_book.get_upcoming_birthdays(int(days)))
         else:
-            return self.contact_book.get_upcoming_birthdays().__str__()
+            return str(self.contact_book.get_upcoming_birthdays())
 
     @handle_error
     def update_contact_email(self, args) -> str:
@@ -300,18 +341,45 @@ class Handler:
 
     @handle_error
     def get_contact_by_name(self, args):
+        """
+        Get contact details by name.
+
+        Args:
+            args (Namespace): Namespace containing the name of the contact.
+
+        Returns:
+            str or Record: The contact's record or a message indicating the contact was not found.
+        """
         return self.get_contact(args, "name")
 
     @handle_error
     def get_contact_by_phone(self, args):
+        """
+        Get contact details by phone number.
+
+        Args:
+            args (Namespace): Namespace containing the phone number of the contact.
+
+        Returns:
+            str or Record: The contact's record or a message indicating the contact was not found.
+        """
         return self.get_contact(args, "phone")
 
     @handle_error
     def get_contact_by_email(self, args):
+        """
+        Get contact details by email.
+
+        Args:
+            args (Namespace): Namespace containing the email of the contact.
+
+        Returns:
+            str or Record: The contact's record or a message indicating the contact was not found.
+        """
         return self.get_contact(args, "email")
 
     @handle_error
-    def add_note(self, args):
+    def add_note(self):
         """
         Add a note to the notebook via user prompt.
 
@@ -361,7 +429,7 @@ class Handler:
         return self.notebook.remove(args.title)
 
     @handle_error
-    def delete_all_notes(self, args):
+    def delete_all_notes(self):
         """
         Delete all notes from the notebook.
         Args:
@@ -447,7 +515,7 @@ class Handler:
             return f"No notes due in the next {days} days."
 
     @handle_error
-    def print_all_notes(self, args):
+    def print_all_notes(self):
         """
         Print all notes in the notebook.
         Returns:
@@ -477,15 +545,12 @@ class Handler:
             Menu.UPDATE_EMAIL: self.update_contact_email,
             Menu.ADD_ADDRESS: self.add_address,
             Menu.REMOVE_ADDRESS: self.remove_address,
-            Menu.ADD_NOTE: self.add_note,
             Menu.FIND_NOTE: self.find_note,
             Menu.DELETE_NOTE: self.delete_note,
-            Menu.DELETE_ALL_NOTES: self.delete_all_notes,
             Menu.UPDATE_NOTE: self.update_note_prompt,
             Menu.SEARCH_NOTES: self.search_notes,
             Menu.FILTER_NOTES_BY_TAG: self.filter_notes,
             Menu.NOTES_DUE_IN_DAYS: self.get_notes_in_days,
-            Menu.SHOW_ALL_NOTES: self.print_all_notes,
         }
 
     def __without_params_commands(self) -> dict:
@@ -493,6 +558,9 @@ class Handler:
         return {
             Menu.SHOW_COMMANDS: self.hello,
             Menu.SHOW_ALL_CONTACTS: self.contact_book.__str__,
+            Menu.ADD_NOTE: self.add_note,
+            Menu.SHOW_ALL_NOTES: self.print_all_notes,
+            Menu.DELETE_ALL_NOTES: self.delete_all_notes,
             Menu.EXIT: self.close,
             Menu.CLOSE: self.close,
         }

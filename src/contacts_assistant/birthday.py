@@ -1,7 +1,15 @@
+"""
+A module containing the Birthday class for representing and validating birthdays.
+
+Classes:
+    Birthday: A class to represent and validate a birthday.
+"""
+
 from datetime import datetime
 
 from contacts_assistant.field import Field
 from contacts_assistant.constants import DATE_FORMAT
+
 
 class Birthday(Field):
     """
@@ -16,6 +24,7 @@ class Birthday(Field):
         __init__(value: str): Initializes the Birthday with a validated date string.
         __str__(): Returns a string representation of the birthday.
     """
+
     def __init__(self, value: str):
         """
         Initializes the Birthday instance by validating the provided date string.
@@ -30,7 +39,7 @@ class Birthday(Field):
             self.value = datetime.strptime(value, DATE_FORMAT)
         except ValueError:
             raise ValueError("Invalid date format. Use DD.MM.YYYY")
-        
+
     def __str__(self):
         """
         Returns a string representation of the birthday.
@@ -38,4 +47,4 @@ class Birthday(Field):
         Returns:
             str: The birthday as a string in the format specified by DATE_FORMAT.
         """
-        return f'{self.value.strftime(DATE_FORMAT)}'
+        return f"{self.value.strftime(DATE_FORMAT)}"
