@@ -21,7 +21,7 @@ with open("requirements.txt", "r", encoding=encoding) as fh:
 
 setuptools.setup(
     name="contacts_assistant",
-    version="0.0.13",
+    version="0.0.14",
     package_dir={'': 'src'},
     packages=setuptools.find_packages(where='src'),
     include_package_data=True,
