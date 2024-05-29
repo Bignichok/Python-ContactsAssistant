@@ -5,17 +5,17 @@ Contacts Assistant is a bot designed to help you manage your address book effici
 ## Initialization
   ### locally
   1. Initialize virtual environment
-     - .venv\Scripts\activate.bat - Windows у командному рядку (CMD)
-     - .venv\Scripts\Activate.ps1 - Windows у PowerShell
-     - source .venv/bin/activate - macOS та Linux
+     - .venv\Scripts\activate.bat - Windows CMD
+     - .venv\Scripts\Activate.ps1 - Windows PowerShell
+     - source .venv/bin/activate - macOS, Linux
   2. pip install -r requirements.txt
   3. python src\main.py
   4. use one of commands presented below (bot will suggest you commands and named arguments that you need)
   ### installed package
   1. Initialize virtual environment
-     - .venv\Scripts\activate.bat - Windows у командному рядку (CMD)
-     - .venv\Scripts\Activate.ps1 - Windows у PowerShell
-     - source .venv/bin/activate - macOS та Linux
+     - .venv\Scripts\activate.bat - Windows CMD
+     - .venv\Scripts\Activate.ps1 - Windows PowerShell
+     - source .venv/bin/activate - macOS, Linux
   2. pip install contacts-assistant
   3. contacts_assistant
 
