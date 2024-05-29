@@ -13,8 +13,8 @@ Constants:
 DATE_FORMAT = "%d.%m.%Y"
 CONTACTS_BOOK_FILENAME = "./contacts_book.pkl"
 NOTEBOOK_FILENAME = "./notebook.json"
-MENU_BORDER = f"{'-'*72}\n"
-GREETING_BANNER = r"""
+MENU_BORDER = f"{'-'*116}\n"
+GREETING_BANNER = """
   ___          _     _              _     _           _   
  / _ \        (_)   | |            | |   | |         | |  
 / /_\ \___ ___ _ ___| |_ __ _ _ __ | |_  | |__   ___ | |_ 
@@ -30,3 +30,4 @@ INPUT_STYLE = {
     "prompt": "#47C959",
     "prompt.arg.text": "#00aaaa",
 }
+MAX_SIMBOLS_IN_ROW = 80

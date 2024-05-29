@@ -24,6 +24,7 @@ def handle_user_input(user_input, parser):
     Returns:
         tuple: The command and a list of arguments.
     """
+
     user_command, *args = user_input.split(maxsplit=1)
     command = Menu.get_by_name(user_command)
     if command:
@@ -73,12 +74,14 @@ def main():
             style=style,
             history=history,
         )
-
-        command, args = handle_user_input(user_input, parser)
-        if command:
-            print(handler.execute(command, args))
+        if user_input:
+            command, args = handle_user_input(user_input, parser)
+            if command:
+                print(handler.execute(command, args))
             if command in (Menu.EXIT, Menu.CLOSE):
                 break
+        print()
+
 
 if __name__ == "__main__":
     main()

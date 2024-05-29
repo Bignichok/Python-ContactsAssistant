@@ -9,8 +9,8 @@ Classes:
 
 import json
 from datetime import datetime
-
-from contacts_assistant.constants import DATE_FORMAT
+from textwrap import fill
+from contacts_assistant.constants import DATE_FORMAT, MAX_SIMBOLS_IN_ROW
 
 
 class Note:
@@ -131,7 +131,18 @@ class Note:
         due_date_str = (
             self.due_date.strftime(DATE_FORMAT) if self.due_date else "Not specified"
         )
+        title = fill(self.title, MAX_SIMBOLS_IN_ROW)
+        content = fill(self.content, MAX_SIMBOLS_IN_ROW) + " \n" * 2
+        tag = f"Tags:       {', '.join(self.tags)}\n"
+        due_date = f"Due Date:   {due_date_str}\n"
+        created_at = f"Created At: {self.created_at.strftime(DATE_FORMAT)}"
         return (
-            f"Title: {self.title}\nContent: {self.content}\nTags: {', '.join(self.tags)}"
-            f"\nDue Date: {due_date_str}\nCreated At: {self.created_at.strftime(DATE_FORMAT)}"
+            title
+            + "\n"
+            + "═" * MAX_SIMBOLS_IN_ROW
+            + "\n"
+            + content
+            + tag
+            + due_date
+            + created_at
         )
